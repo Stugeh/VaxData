@@ -39,33 +39,42 @@ const parseVaccination = (rawObject: rawVax): Vax => (
  * returns an array of json objects
  * @param data  -String where each new line is a JSON object
  *  */
-const stringToObjectArray = (data: string): Order[] | Vax[] => (
-	data
+const stringToObjectArray = (data: string) => {
+	const lineArray: string[] = data
 		.slice(0, -1) // remove trailing new line from EoF
 		.split('\n')  // make an array of lines
-		.map((line) => {
+
+	const firstObject = JSON.parse(lineArray[0])
+	if (!firstObject.orderNumber || !firstObject.sourceBottle) {
+		throw new Error(`invalid object:\n${firstObject}`)
+	}
+
+	if (firstObject.orderNumber) {
+		return lineArray.map((line) => {
 			// turn line into an object
 			const rawObject = JSON.parse(line)
-			if (rawObject.orderNumber) {
-				return parseOrder(rawObject)
-			}
-			if (rawObject.gender && rawObject.sourceBottle) {
-				return parseVaccination(rawObject)
-			}
-			throw new Error('Invalid object: \n' + line)
-		})
-)
+			return parseOrder(rawObject)
+		}) as Order[]
+	}
 
-const getDataFromFiles = (sources: string[]): Order[] | Vax[] => {
-	return sources.map((source): (Order | Vax) => {
-		let dataString = ''
+	return lineArray.map((line) => {
+		// turn line into an object
+		const rawObject = JSON.parse(line)
+		return parseVaccination(rawObject)
+	}) as Vax[]
+}
+
+const getDataFromFiles = (sources: string[], dataType: 'orders' | 'vaccinations') => {
+	const dataArray: Vax[] | Order[] = []
+	sources.forEach((source) => {
 		fs.readFile(__dirname + source, 'utf-8', (error, data) => {
 			console.log('formatting:', source);
 			if (error) throw error
-			dataString = data;
+			dataArray.push(stringToObjectArray(data));
 		});
-		return stringToObjectArray(dataString);
 	});
+
+	return dataArray as Vax[];
 }
 
 const migration = () => {
@@ -78,8 +87,8 @@ const migration = () => {
 		'/../data/vaccinations.source'
 	]
 
-	const orders: Order[] = getDataFromFiles(orderFiles)
-	const vaccinations: Vax[] = getDataFromFiles(vaccinationFiles)
+	const orders: Order[] = getDataFromFiles(orderFiles, 'orders')
+	const vaccinations: Vax[] = getDataFromFiles(vaccinationFiles, 'vaccinations')
 	console.log(orders)
 }
 
