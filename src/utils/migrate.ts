@@ -54,17 +54,17 @@ const stringToObjectArray = (data: string) => {
 			// turn line into an object
 			const rawObject = JSON.parse(line)
 			return parseOrder(rawObject)
-		}) as Order[]
+		})
 	}
 
 	return lineArray.map((line) => {
 		// turn line into an object
 		const rawObject = JSON.parse(line)
 		return parseVaccination(rawObject)
-	}) as Vax[]
+	})
 }
 
-const getDataFromFiles = (sources: string[], dataType: 'orders' | 'vaccinations') => {
+const getDataFromFiles = (sources: string[]) => {
 	const dataArray: Vax[] | Order[] = []
 	sources.forEach((source) => {
 		fs.readFile(__dirname + source, 'utf-8', (error, data) => {
@@ -73,8 +73,7 @@ const getDataFromFiles = (sources: string[], dataType: 'orders' | 'vaccinations'
 			dataArray.push(stringToObjectArray(data));
 		});
 	});
-
-	return dataArray as Vax[];
+	return dataArray
 }
 
 const migration = () => {
@@ -87,8 +86,8 @@ const migration = () => {
 		'/../data/vaccinations.source'
 	]
 
-	const orders: Order[] = getDataFromFiles(orderFiles, 'orders')
-	const vaccinations: Vax[] = getDataFromFiles(vaccinationFiles, 'vaccinations')
+	const orders: Order[] = getDataFromFiles(orderFiles) as Order[]
+	const vaccinations: Vax[] = getDataFromFiles(vaccinationFiles) as Vax[]
 	console.log(orders)
 }
 
