@@ -45,7 +45,8 @@ const stringToObjectArray = (data: string) => {
 		.split('\n')  // make an array of lines
 
 	const firstObject = JSON.parse(lineArray[0])
-	if (!firstObject.orderNumber || !firstObject.sourceBottle) {
+
+	if (!firstObject.orderNumber && !firstObject.sourceBottle) {
 		throw new Error(`invalid object:\n${firstObject}`)
 	}
 
@@ -64,16 +65,25 @@ const stringToObjectArray = (data: string) => {
 	})
 }
 
-const getDataFromFiles = (sources: string[]) => {
-	const dataArray: Vax[] | Order[] = []
+const getDataFromFiles = (sources: string[], dataType: 'orders' | 'vaccinations') => {
+	const orderArray: Order[] = []
+	const vaxArray: Vax[] = []
 	sources.forEach((source) => {
 		fs.readFile(__dirname + source, 'utf-8', (error, data) => {
 			console.log('formatting:', source);
 			if (error) throw error
-			dataArray.push(stringToObjectArray(data));
+			const objects = stringToObjectArray(data)
+
+			if (dataType === 'orders') {
+				objects.forEach((object) => { orderArray.push(object as Order) })
+			}
+			else {
+				objects.forEach((object) => { vaxArray.push(object as Vax) })
+			}
 		});
 	});
-	return dataArray
+	if (dataType === 'orders') return orderArray
+	return vaxArray
 }
 
 const migration = () => {
@@ -82,13 +92,13 @@ const migration = () => {
 		'/../data/SolarBuddhica.source',
 		'/../data/Zerpfy.source',
 	];
-	const vaccinationFiles = [
-		'/../data/vaccinations.source'
-	]
+	// const vaccinationFiles = [
+	// 	'/../data/vaccinations.source'
+	// ]
 
-	const orders: Order[] = getDataFromFiles(orderFiles) as Order[]
-	const vaccinations: Vax[] = getDataFromFiles(vaccinationFiles) as Vax[]
-	console.log(orders)
+	const orders: Order[] = getDataFromFiles(orderFiles, 'orders') as Order[]
+	//const vaccinations: Vax[] = getDataFromFiles(vaccinationFiles) as Vax[]
+	console.log(orders.length)
 }
 
 migration();
