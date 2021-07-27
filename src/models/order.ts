@@ -21,4 +21,4 @@ orderSchema.set('toJSON', {
 	},
 });
 
-module.exports = mongoose.model('Order', orderSchema);
+export default mongoose.model('Order', orderSchema);
