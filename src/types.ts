@@ -9,7 +9,9 @@ export type VaccineName = 'SolarBuddhica' | 'Zerpfy' | 'Antiqua';
 export type HealthCareDistrict = 'HYKS' | 'KYS' | 'OYS' | 'TAYS' | 'TYKS';
 
 export type VaccineOrder = {
-    id: string,
+    _id?: string;
+    __v?: string;
+    orderId: string,
     healthCareDistrict: HealthCareDistrict,
     orderNumber: number,
     responsiblePerson: string,
