@@ -18,5 +18,4 @@ vaxSchema.set('toJSON', {
 	},
 });
 
-const Vaccination = mongoose.model('Vaccination', vaxSchema);
-module.exports = Vaccination;
+module.exports = mongoose.model('Vaccination', vaxSchema);
