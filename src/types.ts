@@ -1,4 +1,8 @@
-export type Gender = 'male' | 'female' | 'nonbinary';
+export enum Gender {
+    'Male' = 'male',
+    'Female' = 'female',
+    'Other' = 'nonbinary'
+}
 
 export type VaccineName = 'SolarBuddhica' | 'Zerpfy' | 'Antiqua';
 
@@ -15,6 +19,8 @@ export type VaccineOrder = {
 };
 
 export type Vaccination = {
+    _id?: string;
+    __v?: string;
     id: string;
     gender: Gender;
     sourceBottle: string;
