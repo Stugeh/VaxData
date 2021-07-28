@@ -34,7 +34,16 @@ export type Vaccination = {
 };
 
 export type OrganizedOrders = {
-    [key in VaccineName]: VaccineOrder[]
+    [key in VaccineName]: {
+        orders: VaccineOrder[]
+        counts: {
+            totalOrders: number,
+            totalVaccines: number,
+            expired: number,
+            dosesUsed: number,
+            dosesLeft: number,
+        }
+    }
 }
 
 export type OrderResponse = {

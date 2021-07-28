@@ -1,18 +1,53 @@
 import OrderModel from '../models/order';
 require('../models/vaccination');
-import { OrganizedOrders, VaccineOrder as Order } from '../types';
+import {
+    OrganizedOrders,
+    VaccineOrder as Order,
+} from '../types';
 
 
 export const organizeByProducer = (orders: Order[]) => {
     const organizedOrders: OrganizedOrders = {
-        SolarBuddhica: [],
-        Zerpfy: [],
-        Antiqua: [],
+        SolarBuddhica: {
+            orders: [],
+            counts: {
+                totalOrders: 0,
+                totalVaccines: 0,
+                expired: 0,
+                dosesUsed: 0,
+                dosesLeft: 0
+            }
+        },
+        Zerpfy: {
+            orders: [],
+            counts: {
+                totalOrders: 0,
+                totalVaccines: 0,
+                expired: 0,
+                dosesUsed: 0,
+                dosesLeft: 0
+            }
+        },
+        Antiqua: {
+            orders: [],
+            counts: {
+                totalOrders: 0,
+                totalVaccines: 0,
+                expired: 0,
+                dosesUsed: 0,
+                dosesLeft: 0
+            }
+        },
     };
+
     orders.forEach(order => {
-        organizedOrders[order.vaccine].push(order);
+        organizedOrders[order.vaccine].orders.push(order);
     });
     return organizedOrders;
+};
+
+export const getProducerCounts = () => {
+    
 };
 
 export const getAllOrders = async () => {
