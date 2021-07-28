@@ -47,7 +47,7 @@ describe('Testing migrate scripts', () => {
             migrate.linesToVaccinations(invalidStringArray)
         }).toThrow(SyntaxError)
         expect(() => {
-            migrate.linesToVaccinations(vaxStringArray)
+            migrate.linesToVaccinations(migrate.getDataFromFiles(orderFiles))
         }).toThrow()
     })
 
