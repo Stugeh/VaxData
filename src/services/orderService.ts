@@ -10,3 +10,10 @@ export const getAllOrders = async () => {
         .populate('vaccinations') as Order[];
     return orders;
 };
+
+export const getOrdersByName = async (name: string) => {
+    const orders = await OrderModel
+        .find({ vaccine: name })
+        .populate('vaccinations') as Order[];
+    return orders;
+};
