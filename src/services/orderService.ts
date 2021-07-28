@@ -1,8 +1,19 @@
 import OrderModel from '../models/order';
 require('../models/vaccination');
-import {VaccineOrder as Order} from '../types';
+import { OrganizedOrders, VaccineOrder as Order } from '../types';
 
 
+export const organizeByProducer = (orders: Order[]) => {
+    const organizedOrders: OrganizedOrders = {
+        SolarBuddhica: [],
+        Zerpfy: [],
+        Antiqua: [],
+    };
+    orders.forEach(order => {
+        organizedOrders[order.vaccine].push(order);
+    });
+    return organizedOrders;
+};
 
 export const getAllOrders = async () => {
     const orders = await OrderModel

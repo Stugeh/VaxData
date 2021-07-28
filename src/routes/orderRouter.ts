@@ -1,8 +1,8 @@
 import express, { Response } from 'express';
-import { getAllOrders, getOrdersByName } from '../services/orderService';
+import { getAllOrders, organizeByProducer } from '../services/orderService';
 const router = express.Router();
 
-import { OrganizedOrders, OrderResponse, VaccineOrder as Order } from '../types'
+import { OrderResponse } from '../types'
 
 
 const sendOrders = (body: OrderResponse, res: Response) => {
@@ -10,17 +10,6 @@ const sendOrders = (body: OrderResponse, res: Response) => {
     else res.send(body)
 }
 
-const organizeByProducer = (orders: Order[]) => {
-    const organizedOrders: OrganizedOrders = {
-        SolarBuddhica: [],
-        Zerpfy: [],
-        Antiqua: [],
-    }
-    orders.forEach(order => {
-        organizedOrders[order.vaccine].push(order)
-    })
-    return organizedOrders;
-}
 
 router.get('/', async (_req, res) => {
     try {
