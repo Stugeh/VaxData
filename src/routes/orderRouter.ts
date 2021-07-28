@@ -3,11 +3,13 @@ import { getAllOrders } from '../services/orderService';
 const router = express.Router();
 
 router.get('/', async (_req, res) => {
-    const orders = await getAllOrders()
-    if (orders.length > 0) {
-        res.send(orders)
+    try {
+        const orders = await getAllOrders()
+        if (orders.length === 0) res.sendStatus(404)
+        else res.send(orders)
+    } catch (err) {
+        console.log(err);
     }
-    res.send(404)
 })
 
 export default router;
