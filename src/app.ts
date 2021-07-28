@@ -10,7 +10,7 @@ const app = express();
 // DB connection
 console.info('connecting to', MONGOURL);
 mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
-	.catch((err) => console.log('err', err));
+  .catch((err) => console.log('err', err));
 
 
 
