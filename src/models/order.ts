@@ -14,11 +14,20 @@ const orderSchema = new mongoose.Schema({
 	vaccine: { type: String, required: true },
 });
 
+orderSchema.virtual('vaccinations', {
+	ref: 'Vaccination',
+	localField: 'orderId',
+	foreignField: 'sourceBottle',
+	justOne: false
+})
+
+orderSchema.set('toObject', { virtuals: true });
 orderSchema.set('toJSON', {
 	transform: (_document: unknown, returnedObj: VaccineOrder) => {
 		delete returnedObj._id;
 		delete returnedObj.__v;
 	},
+	virtuals: true
 });
 
 export default mongoose.model('Order', orderSchema);
