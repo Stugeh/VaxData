@@ -1,4 +1,5 @@
 import OrderModel from '../models/order';
+require('../models/vaccination');
 import {VaccineOrder as Order} from '../types';
 
 
