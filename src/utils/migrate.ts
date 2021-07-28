@@ -9,6 +9,11 @@ interface rawOrder extends Order {
 	id: string
 }
 
+/**
+ * 
+ * @param rawObject - Uncleaned up order object
+ * @returns - Cleaned order Object
+ */
 const parseOrder = (rawObject: rawOrder): Order => (
 	{
 		orderId: rawObject.id,
@@ -23,68 +28,85 @@ const parseOrder = (rawObject: rawOrder): Order => (
 
 
 interface rawVax extends Vax {
-	id: string
+	'vaccination-id': string,
+	vaccinationDate: string
 }
 
+/**
+ * 
+ * @param rawObject - Uncleaned up vaccination object
+ * @returns - Cleaned Vaccination Object
+ */
 const parseVaccination = (rawObject: rawVax): Vax => (
 	{
-		vaccinationId: rawObject.id,
+		vaccinationId: rawObject['vaccination-id'],
 		gender: rawObject.gender,
 		sourceBottle: rawObject.sourceBottle,
-		injected: rawObject.injected,
+		injected: rawObject.vaccinationDate,
 	}
 )
 
+
 /**
- * returns an array of json objects
- * @param data  -String where each new line is a JSON object
- *  */
-const stringToObjectArray = (data: string) => {
-	const lineArray: string[] = data
-		.slice(0, -1) // remove trailing new line from EoF
-		.split('\n')  // make an array of lines
+ * 
+ * @param keys - An array of keys you expect an object to have
+ * @param object - The Object
+ * @returns - Boolean
+ */
+const hasKeys = (keys: string[], object: { [key: string]: any }) => (
+	keys.every(key => object.hasOwnProperty(key))
+)
 
-	const firstObject = JSON.parse(lineArray[0])
-
-	if (!firstObject.orderNumber && !firstObject.sourceBottle) {
-		throw new Error(`invalid object:\n${firstObject}`)
-	}
-
-	if (firstObject.orderNumber) {
-		return lineArray.map((line) => {
-			// turn line into an object
-			const rawObject = JSON.parse(line)
-			return parseOrder(rawObject)
-		})
-	}
-
-	return lineArray.map((line) => {
-		// turn line into an object
-		const rawObject = JSON.parse(line)
-		return parseVaccination(rawObject)
+/**
+ * 
+ * @param lines - An array of lines that are convertible to orders
+ * @returns - List of orders
+ */
+const linesToOrders = (lines: string[]) => {
+	const keys = [
+		'id', 'healthCareDistrict', 'orderNumber',
+		'responsiblePerson', 'injections', 'arrived', 'vaccine'
+	]
+	const orders = lines.map(line => {
+		const order = JSON.parse(line)
+		if (!hasKeys(keys, order)) throw new Error(`invalid order: ${line}`)
+		return parseOrder(order)
 	})
+	return orders
 }
 
-const getDataFromFiles = (sources: string[], dataType: 'orders' | 'vaccinations') => {
-	const orderArray: Order[] = []
-	const vaxArray: Vax[] = []
-	sources.forEach((source) => {
-		fs.readFile(__dirname + source, 'utf-8', (error, data) => {
-			console.log('formatting:', source);
-			if (error) throw error
-			const objects = stringToObjectArray(data)
-
-			if (dataType === 'orders') {
-				objects.forEach((object) => { orderArray.push(object as Order) })
-			}
-			else {
-				objects.forEach((object) => { vaxArray.push(object as Vax) })
-			}
-		});
-	});
-	if (dataType === 'orders') return orderArray
-	return vaxArray
+/**
+ * 
+ * @param lines - An array of lines that are convertible to vaccinations
+ * @returns - List of vaccinations
+ */
+const linesToVaccinations = (lines: string[]) => {
+	const keys = ['vaccination-id', 'gender', 'sourceBottle', 'vaccinationDate']
+	const vaccinations = lines.map(line => {
+		const vaccination = JSON.parse(line)
+		if (!hasKeys(keys, vaccination)) throw new Error(`invalid vaccination: ${line}`)
+		return parseVaccination(vaccination)
+	})
+	return vaccinations
 }
+
+/**
+ * 
+ * @param sources - an array of strings with the relative paths to data files
+ * @returns the compiled data as an array of strings separated by line breaks
+ */
+const getDataFromFiles = (sources: string[]) => {
+	const allData = sources.flatMap((source) => {
+		console.log('fetching: ', source);
+		const data = fs.readFileSync(
+			__dirname + source,
+			{ encoding: 'utf-8', flag: 'r' },
+		)
+		// remove trailing new line from EoF and make an array of lines
+		return data.slice(0, -1).split('\n')
+	})
+	return allData
+};
 
 const migration = () => {
 	const orderFiles = [
@@ -92,13 +114,17 @@ const migration = () => {
 		'/../data/SolarBuddhica.source',
 		'/../data/Zerpfy.source',
 	];
-	// const vaccinationFiles = [
-	// 	'/../data/vaccinations.source'
-	// ]
+	const vaccinationFiles = [
+		'/../data/vaccinations.source'
+	]
 
-	const orders: Order[] = getDataFromFiles(orderFiles, 'orders') as Order[]
-	//const vaccinations: Vax[] = getDataFromFiles(vaccinationFiles) as Vax[]
-	console.log(orders.length)
+	const orderData = getDataFromFiles(orderFiles)
+	const vaccinationData = getDataFromFiles(vaccinationFiles)
+
+	const orderObjects = linesToOrders(orderData)
+	const vaccinationObjects = linesToVaccinations(vaccinationData)
+	console.log(orderObjects[0])
+	console.log(vaccinationObjects[0])
 }
 
 migration();
