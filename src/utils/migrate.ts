@@ -123,8 +123,10 @@ export const migration = () => {
 
 	const orderObjects = linesToOrders(orderData)
 	const vaccinationObjects = linesToVaccinations(vaccinationData)
-	console.log(orderObjects[0])
-	console.log(vaccinationObjects[0])
+	if (process.env.NODE_ENV === 'development') {
+		console.log(orderObjects[0])
+		console.log(vaccinationObjects[0])
+	}
 }
 
 migration();
