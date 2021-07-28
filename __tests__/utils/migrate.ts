@@ -4,6 +4,7 @@
 import * as migrate from '../../src/utils/migrate'
 
 describe('Testing migrate scripts', () => {
+
     const orderFiles = [
         '/../data/Antiqua.source',
         '/../data/SolarBuddhica.source',
@@ -50,5 +51,4 @@ describe('Testing migrate scripts', () => {
             migrate.linesToVaccinations(migrate.getDataFromFiles(orderFiles))
         }).toThrow()
     })
-
 })
