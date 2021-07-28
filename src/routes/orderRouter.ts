@@ -15,8 +15,7 @@ router.get('/', async (_req, res) => {
     try {
         const orders = await getAllOrders()
         const organizedOrders = organizeByProducer(orders)
-        const body = {}
-        sendOrders(body, res)
+        sendOrders(organizedOrders, res)
     } catch (err) {
         throw new Error(err)
     }

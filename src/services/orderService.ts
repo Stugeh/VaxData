@@ -11,9 +11,9 @@ export const organizeByProducer = (orders: Order[]) => {
         SolarBuddhica: {
             orders: [],
             counts: {
-                totalOrders: 0,
-                totalVaccines: 0,
-                expired: 0,
+                orders: 0,
+                doses: 0,
+                expiredDoses: 0,
                 dosesUsed: 0,
                 dosesLeft: 0
             }
@@ -21,9 +21,9 @@ export const organizeByProducer = (orders: Order[]) => {
         Zerpfy: {
             orders: [],
             counts: {
-                totalOrders: 0,
-                totalVaccines: 0,
-                expired: 0,
+                orders: 0,
+                doses: 0,
+                expiredDoses: 0,
                 dosesUsed: 0,
                 dosesLeft: 0
             }
@@ -31,9 +31,9 @@ export const organizeByProducer = (orders: Order[]) => {
         Antiqua: {
             orders: [],
             counts: {
-                totalOrders: 0,
-                totalVaccines: 0,
-                expired: 0,
+                orders: 0,
+                doses: 0,
+                expiredDoses: 0,
                 dosesUsed: 0,
                 dosesLeft: 0
             }
