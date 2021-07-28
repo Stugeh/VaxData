@@ -39,11 +39,16 @@ describe('Testing migrate scripts', () => {
         }).toThrow()
     })
 
-    it('', () => {
-
+    it('Vaccination data is correctly converted to vaccination objects', () => {
+        const objects = migrate.linesToVaccinations(vaxStringArray)
+        expect(objects.length).toBe(vaxStringArray.length)
+        expect(objects[0].vaccinationId).toBe("3d3440e2-357b-4139-857b-027d8bdcb85b")
+        expect(() => {
+            migrate.linesToVaccinations(invalidStringArray)
+        }).toThrow(SyntaxError)
+        expect(() => {
+            migrate.linesToVaccinations(vaxStringArray)
+        }).toThrow()
     })
 
-    it('', () => {
-
-    })
 })
