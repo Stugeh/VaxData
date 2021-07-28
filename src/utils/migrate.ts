@@ -1,12 +1,23 @@
-// import VaccineOrder from '../models/order';
-// import Vaccination from '../models/vaccination';
+import VaccineOrder from '../models/order';
+import Vaccination from '../models/vaccination';
 import { Vaccination as Vax, VaccineOrder as Order } from '../types'
 import fs from 'fs';
+import mongoose from 'mongoose';
+import { MONGOURL } from '../config';
 
 require('express-async-errors');
 
 interface rawOrder extends Order {
 	id: string
+}
+interface rawVax extends Vax {
+	'vaccination-id': string,
+	vaccinationDate: string
+}
+
+type AllData = {
+	orderObjects: Order[]
+	vaccinationObjects: Vax[]
 }
 
 /**
@@ -27,10 +38,6 @@ export const parseOrder = (rawObject: rawOrder): Order => (
 )
 
 
-interface rawVax extends Vax {
-	'vaccination-id': string,
-	vaccinationDate: string
-}
 
 /**
  * 
@@ -115,6 +122,19 @@ export const getDataFromFiles = (sources: string[]) => {
 	return allData
 };
 
+
+const initDb = async ({ orderObjects, vaccinationObjects }: AllData) => {
+	mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
+		.catch((err) => console.log('err', err))
+
+	await VaccineOrder.deleteMany({})
+	await Vaccination.deleteMany({})
+	await VaccineOrder.insertMany(orderObjects)
+	await Vaccination.insertMany(vaccinationObjects)
+
+	mongoose.connection.close();
+}
+
 export const migration = () => {
 	const orderFiles = [
 		'/../data/Antiqua.source',
@@ -130,10 +150,8 @@ export const migration = () => {
 
 	const orderObjects = linesToOrders(orderData)
 	const vaccinationObjects = linesToVaccinations(vaccinationData)
-	if (process.env.NODE_ENV === 'development') {
-		console.log(orderObjects[0])
-		console.log(vaccinationObjects[0])
-	}
+
+	initDb({ orderObjects, vaccinationObjects })
 }
 
 migration();
