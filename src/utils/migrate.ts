@@ -85,13 +85,17 @@ export const linesToOrders = (lines: string[]) => {
  * @returns - List of vaccinations
  */
 export const linesToVaccinations = (lines: string[]) => {
-	const keys = ['vaccination-id', 'gender', 'sourceBottle', 'vaccinationDate']
-	const vaccinations = lines.map(line => {
-		const vaccination = JSON.parse(line)
-		if (!hasKeys(keys, vaccination)) throw new Error(`invalid vaccination: ${line}`)
-		return parseVaccination(vaccination)
-	})
-	return vaccinations
+	try {
+		const keys = ['vaccination-id', 'gender', 'sourceBottle', 'vaccinationDate']
+		const vaccinations = lines.map(line => {
+			const vaccination = JSON.parse(line)
+			if (!hasKeys(keys, vaccination)) throw new Error(`invalid vaccination: ${line}`)
+			return parseVaccination(vaccination)
+		})
+		return vaccinations
+	} catch (err) {
+		throw new SyntaxError()
+	}
 }
 
 /**
