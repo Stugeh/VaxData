@@ -4,7 +4,11 @@ export enum Gender {
     'Other' = 'nonbinary'
 }
 
-export type VaccineName = 'SolarBuddhica' | 'Zerpfy' | 'Antiqua';
+export enum VaccineName {
+    SOLAR = 'SolarBuddhica',
+    ZERPFY = 'Zerpfy',
+    ANTIQUA = 'Antiqua'
+}
 
 export type HealthCareDistrict = 'HYKS' | 'KYS' | 'OYS' | 'TAYS' | 'TYKS';
 
@@ -28,3 +32,13 @@ export type Vaccination = {
     sourceBottle: string;
     injected: string;
 };
+
+export type OrganizedOrders = {
+    [key in VaccineName]: VaccineOrder[]
+}
+
+export type OrderResponse = {
+    orders: VaccineOrder[][],
+
+
+}
