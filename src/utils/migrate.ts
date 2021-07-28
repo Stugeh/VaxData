@@ -14,7 +14,7 @@ interface rawOrder extends Order {
  * @param rawObject - Uncleaned up order object
  * @returns - Cleaned order Object
  */
-const parseOrder = (rawObject: rawOrder): Order => (
+export const parseOrder = (rawObject: rawOrder): Order => (
 	{
 		orderId: rawObject.id,
 		healthCareDistrict: rawObject.healthCareDistrict,
@@ -37,7 +37,7 @@ interface rawVax extends Vax {
  * @param rawObject - Uncleaned up vaccination object
  * @returns - Cleaned Vaccination Object
  */
-const parseVaccination = (rawObject: rawVax): Vax => (
+export const parseVaccination = (rawObject: rawVax): Vax => (
 	{
 		vaccinationId: rawObject['vaccination-id'],
 		gender: rawObject.gender,
@@ -53,7 +53,7 @@ const parseVaccination = (rawObject: rawVax): Vax => (
  * @param object - The Object
  * @returns - Boolean
  */
-const hasKeys = (keys: string[], object: { [key: string]: any }) => (
+export const hasKeys = (keys: string[], object: { [key: string]: any }) => (
 	keys.every(key => object.hasOwnProperty(key))
 )
 
@@ -62,7 +62,7 @@ const hasKeys = (keys: string[], object: { [key: string]: any }) => (
  * @param lines - An array of lines that are convertible to orders
  * @returns - List of orders
  */
-const linesToOrders = (lines: string[]) => {
+export const linesToOrders = (lines: string[]) => {
 	const keys = [
 		'id', 'healthCareDistrict', 'orderNumber',
 		'responsiblePerson', 'injections', 'arrived', 'vaccine'
@@ -80,7 +80,7 @@ const linesToOrders = (lines: string[]) => {
  * @param lines - An array of lines that are convertible to vaccinations
  * @returns - List of vaccinations
  */
-const linesToVaccinations = (lines: string[]) => {
+export const linesToVaccinations = (lines: string[]) => {
 	const keys = ['vaccination-id', 'gender', 'sourceBottle', 'vaccinationDate']
 	const vaccinations = lines.map(line => {
 		const vaccination = JSON.parse(line)
@@ -95,7 +95,7 @@ const linesToVaccinations = (lines: string[]) => {
  * @param sources - an array of strings with the relative paths to data files
  * @returns the compiled data as an array of strings separated by line breaks
  */
-const getDataFromFiles = (sources: string[]) => {
+export const getDataFromFiles = (sources: string[]) => {
 	const allData = sources.flatMap((source) => {
 		console.log('fetching: ', source);
 		const data = fs.readFileSync(
@@ -108,7 +108,7 @@ const getDataFromFiles = (sources: string[]) => {
 	return allData
 };
 
-const migration = () => {
+export const migration = () => {
 	const orderFiles = [
 		'/../data/Antiqua.source',
 		'/../data/SolarBuddhica.source',
