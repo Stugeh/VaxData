@@ -63,16 +63,20 @@ export const hasKeys = (keys: string[], object: { [key: string]: any }) => (
  * @returns - List of orders
  */
 export const linesToOrders = (lines: string[]) => {
-	const keys = [
-		'id', 'healthCareDistrict', 'orderNumber',
-		'responsiblePerson', 'injections', 'arrived', 'vaccine'
-	]
-	const orders = lines.map(line => {
-		const order = JSON.parse(line)
-		if (!hasKeys(keys, order)) throw new Error(`invalid order: ${line}`)
-		return parseOrder(order)
-	})
-	return orders
+	try {
+		const keys = [
+			'id', 'healthCareDistrict', 'orderNumber',
+			'responsiblePerson', 'injections', 'arrived', 'vaccine'
+		]
+		const orders = lines.map(line => {
+			const order = JSON.parse(line)
+			if (!hasKeys(keys, order)) throw new Error(`invalid order: ${line}`)
+			return parseOrder(order)
+		})
+		return orders
+	} catch (err) {
+		throw new SyntaxError()
+	}
 }
 
 /**
@@ -97,7 +101,6 @@ export const linesToVaccinations = (lines: string[]) => {
  */
 export const getDataFromFiles = (sources: string[]) => {
 	const allData = sources.flatMap((source) => {
-		console.log('fetching: ', source);
 		const data = fs.readFileSync(
 			__dirname + source,
 			{ encoding: 'utf-8', flag: 'r' },
