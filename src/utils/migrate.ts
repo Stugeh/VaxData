@@ -122,7 +122,11 @@ export const getDataFromFiles = (sources: string[]) => {
 	return allData
 };
 
-
+/**
+ * connects to database, wipes it and re-initializes data
+ * @param orderObjects - an array of formatted orders, 
+ * @param vaccinationObjects - an array of formatted vaccinations
+ */
 const initDb = async ({ orderObjects, vaccinationObjects }: AllData) => {
 	mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
 		.catch((err) => console.log('err', err))
