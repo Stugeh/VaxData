@@ -1,3 +1,4 @@
+import readline from 'readline';
 import VaccineOrder from '../models/order';
 import Vaccination from '../models/vaccination';
 import { Vaccination as Vax, VaccineOrder as Order } from '../types';
@@ -151,13 +152,26 @@ export const migration = () => {
         '/../data/vaccinations.source'
     ];
 
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+    
+    
     const orderData = getDataFromFiles(orderFiles);
     const vaccinationData = getDataFromFiles(vaccinationFiles);
-
+    
     const orderObjects = linesToOrders(orderData);
     const vaccinationObjects = linesToVaccinations(vaccinationData);
-
-    initDb({ orderObjects, vaccinationObjects });
+    
+    rl.question(
+        'This resets the database. are you sure? (y/n)',
+        (answer) => {
+            if(answer === 'y') initDb({ orderObjects, vaccinationObjects });
+            rl.close();
+        }
+    );
+    
 };
 
 if (process.env.NODE_ENV !== 'test') migration();
