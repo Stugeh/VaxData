@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "test": "cd server && yarn run test && cd ../client && yarn run test",
-        "build": "cd client && yarn run build && cd ../server && yarn run tsc",
+        "build": "rm -rf ./server/build && cd client && yarn run build && cd ../server && yarn run tsc",
         "start:prod": "cd server && yarn start",
         "server": "cd server && yarn run dev",
         "client": "cd client && yarn start",
