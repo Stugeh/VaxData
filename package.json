@@ -39,5 +39,8 @@
     "mongoose": "^5.13.3",
     "ts-jest": "^27.0.4",
     "uuid": "^8.3.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
