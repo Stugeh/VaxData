@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "test": "cd server && yarn run test && cd ../client && yarn run test",
+        "build": "cd client && npm run build",
+        "start:prod": "cd server && yarn start"
+    }
+}
