@@ -1,5 +1,10 @@
-import mongoose from 'mongooose';
-import * as orderService from '../../src/services/orderService';
+/**
+ * @jest-environment node
+ */
+
+import mongoose from 'mongoose';
+
+//import * as orderService from '../../src/services/orderService';
 
 describe('getAllOrders', () => {
     it('sanity check', () => {
@@ -11,5 +16,7 @@ describe('getAllOrders', () => {
     //     const orders = await orderService.getAllOrders();
     //     expect(orders.length).not.toBe(0);
     // });
+
+    afterAll(async () => await mongoose.connection.close());
 
 });
