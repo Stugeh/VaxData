@@ -4,6 +4,7 @@
         "build": "cd client && npm run build",
         "start:prod": "cd server && yarn start",
         "server": "cd server && yarn run dev",
-        "client": "cd client && yarn start"
+        "client": "cd client && yarn start",
+        "install": "cd server && yarn install && cd ../client yarn install"
     }
 }
