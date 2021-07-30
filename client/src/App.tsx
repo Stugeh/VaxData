@@ -1,12 +1,13 @@
-import React from 'react';
 import './App.css';
-import useFetchOrders from './hooks/useFetchOrders';
+
+// import useFetchOrders from './hooks/useFetchOrders';
+import TopBar from './components/TopBar';
 
 function App() {
-  const { data } = useFetchOrders();
-  console.log(`data.Antiqua[0]`, data);
+  // const { data } = useFetchOrders();
   return (
     <div className="App">
+      <TopBar />
     </div>
   );
 }
