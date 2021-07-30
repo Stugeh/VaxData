@@ -7,11 +7,6 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/material-ui": "^0.21.9",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.15",
-    "@types/react-dom": "^17.0.0",
     "axios": "^0.21.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -24,7 +19,8 @@
     "build": "react-scripts build && mv build ../server",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint"
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -45,9 +41,15 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "@types/material-ui": "^0.21.9",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.15",
+    "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
     "eslint": "^7.31.0",
+    "eslint-config-react": "^1.1.7",
     "eslint-plugin-react": "^7.24.0"
   }
 }
