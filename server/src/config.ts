@@ -7,7 +7,6 @@ export const PORT: number = process.env.PORT
   ? parseInt(process.env.PORT)
   : 3001;
 
-console.log(process.env)
 export const MONGOURL: string = process.env.MONGOURL as string;
 
 export const GITHUB_API_URL: string =

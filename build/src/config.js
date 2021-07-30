@@ -10,8 +10,7 @@ dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '..', '.env') 
 exports.PORT = process.env.PORT
     ? parseInt(process.env.PORT)
     : 3001;
-console.log(process.env);
-exports.MONGOURL = process.env.MONGOURL;
+exports.MONGOURL = 'mongodb+srv://***REMOVED***.mongodb.net/VaxData?retryWrites=true&w=majority' || process.env.MONGOURL;
 exports.GITHUB_API_URL = process.env.GITHUB_API_URL || 'https://api.github.com';
 exports.GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 exports.GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;

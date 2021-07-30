@@ -18,7 +18,7 @@ mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(express.json());
 app.use(express.static('build'));
 // middleware
-app.use(cors())
+app.use(cors());
 
 // Routers
 app.use('/api/orders/', orderRouter);
