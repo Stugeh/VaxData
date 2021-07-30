@@ -129,7 +129,7 @@ export const getDataFromFiles = (sources: string[]) => {
  * @param orderObjects - an array of formatted orders, 
  * @param vaccinationObjects - an array of formatted vaccinations
  */
-const initDb = async ({ orderObjects, vaccinationObjects }: AllData) => {
+const initDb = async ({ orderObjects, vaccinationObjects }: AllData) => { 
     mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
         .catch((err) => console.log('err', err));
 
@@ -160,4 +160,4 @@ export const migration = () => {
     initDb({ orderObjects, vaccinationObjects });
 };
 
-migration();
+if (process.env.NODE_ENV !== 'test') migration();
