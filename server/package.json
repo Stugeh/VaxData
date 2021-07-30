@@ -7,7 +7,7 @@
     "tsc": "tsc",
     "dev": "ts-node-dev ./src/index.ts",
     "lint": "eslint --ext .ts .",
-    "start": "node build/index.js",
+    "start": "node build/src/index.js",
     "migrate": "ts-node-dev ./src/utils/migrate.ts",
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "build": "cd client && npm run build"
