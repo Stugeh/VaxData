@@ -4,6 +4,11 @@ import {MONGOURL} from '../../src/config';
 import {getAllOrders} from '../../src/services/orderService';
 
 describe('Order service', () => {
+    // Realistically i would have to create a separate
+    // database for testing that's initialized every time but
+    // since we wont be inserting or deleting info in
+    // production db im just using the production db
+    // without initializing it.
     mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
     it('getAll can fetch orders', async () => {
