@@ -3,37 +3,32 @@ import axios from 'axios';
 
 import { OrganizedOrders } from '../types';
 import validateData from '../utils/validateOrders';
-import { apiBaseUrl } from "../constants";
-
+import { apiBaseUrl } from '../constants';
 
 const initData: OrganizedOrders = {
-    SolarBuddhica: [],
-    Zerpfy: [],
-    Antiqua: []
+  SolarBuddhica: [],
+  Zerpfy: [],
+  Antiqua: [],
 };
 
 const useFetchOrders = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState(initData);
-    const [serverError, setServerError] = useState(null);
+  const [data, setData] = useState<OrganizedOrders>(initData);
+  const [error, setError] = useState('');
 
-    useEffect(() => {
-        setIsLoading(true);
-        const fetchData = async () => {
-            try {
-                const resp = await axios.get<OrganizedOrders>(`${apiBaseUrl}orders/`);
-                const data = validateData(resp.data);
-                setData(data);
-                setIsLoading(false);
-            } catch (error) {
-                setServerError(error);
-                setIsLoading(false);
-            }
-        };
-        void fetchData();
-    }, []);
-    
-    return {isLoading, data, serverError};
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resp = await axios.get<OrganizedOrders>(`${apiBaseUrl}orders/`);
+        const body = validateData(resp.data);
+        setData(body);
+      } catch (err) {
+        setError(err);
+      }
+    };
+    void fetchData();
+  }, []);
+
+  return { data, error };
 };
 
 export default useFetchOrders;
