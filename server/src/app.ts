@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 import { MONGOURL } from './config';
 import orderRouter from './routes/orderRouter';
@@ -17,6 +18,7 @@ mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(express.json());
 app.use(express.static('build'));
 // middleware
+app.use(cors())
 
 // Routers
 app.use('/api/orders/', orderRouter);
