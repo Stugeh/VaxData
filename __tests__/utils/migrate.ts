@@ -1,7 +1,8 @@
-/**
- * @jest-environment node
- */
-import * as migrate from '../../src/utils/migrate';
+import {
+    getDataFromFiles,
+    linesToOrders,
+    linesToVaccinations
+} from '../../src/utils/migrate';
 
 describe('Testing migrate scripts', () => {
 
@@ -22,38 +23,37 @@ describe('Testing migrate scripts', () => {
     ];
 
     it('Getting data from files works', () => {
-        const data = migrate.getDataFromFiles(orderFiles);
+        const data = getDataFromFiles(orderFiles);
         expect(data.length).not.toBe(0);
         expect(data[0]).toEqual(firstOrderString);
     });
 
     it('Order data is correctly converted to order objects', () => {
-        const data = migrate.getDataFromFiles(orderFiles).slice(0, 11);
-        const objects = migrate.linesToOrders(data);
+        const data = getDataFromFiles(orderFiles).slice(0, 11);
+        const objects = linesToOrders(data);
         expect(objects.length).toBe(data.length);
         expect(objects[0].orderId).toBe('6da3a8cf-c923-4c77-8f80-c69c935fe1df');
         
         expect(() => {
-            migrate.linesToOrders(invalidStringArray);
+            linesToOrders(invalidStringArray);
         }).toThrow(SyntaxError);
         
         expect(() => {
-            migrate.linesToOrders(vaxStringArray);
+            linesToOrders(vaxStringArray);
         }).toThrow();
     });
 
     it('Vaccination data is correctly converted to vaccination objects', () => {
-        const objects = migrate.linesToVaccinations(vaxStringArray);
+        const objects = linesToVaccinations(vaxStringArray);
         expect(objects.length).toBe(vaxStringArray.length);
         expect(objects[0].vaccinationId).toBe('3d3440e2-357b-4139-857b-027d8bdcb85b');
         
         expect(() => {
-            migrate.linesToVaccinations(invalidStringArray);
+            linesToVaccinations(invalidStringArray);
         }).toThrow(SyntaxError);
 
         expect(() => {
-            migrate.linesToVaccinations(migrate.getDataFromFiles(orderFiles));
+            linesToVaccinations(getDataFromFiles(orderFiles));
         }).toThrow();
     });
-
 });
