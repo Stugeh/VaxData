@@ -21,7 +21,7 @@ const useFetchOrders = () => {
         setIsLoading(true);
         const fetchData = async () => {
             try {
-                const resp = await axios.get<OrganizedOrders>(`${apiBaseUrl}/orders/`);
+                const resp = await axios.get<OrganizedOrders>(`${apiBaseUrl}orders/`);
                 const data = validateData(resp.data);
                 setData(data);
                 setIsLoading(false);
