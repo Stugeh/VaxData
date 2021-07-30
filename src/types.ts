@@ -5,9 +5,9 @@ export enum Gender {
 }
 
 export enum VaccineName {
-    SOLAR = 'SolarBuddhica',
-    ZERPFY = 'Zerpfy',
-    ANTIQUA = 'Antiqua'
+    Solar = 'SolarBuddhica',
+    Zerpfy = 'Zerpfy',
+    Antiqua = 'Antiqua'
 }
 
 export type HealthCareDistrict = 'HYKS' | 'KYS' | 'OYS' | 'TAYS' | 'TYKS';
