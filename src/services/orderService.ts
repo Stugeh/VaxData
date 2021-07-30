@@ -5,49 +5,26 @@ import {
     VaccineOrder as Order,
 } from '../types';
 
-
+/**
+ * 
+ *  Organizes orders into an object under each producer as arrays.
+ * @param orders 
+ * @returns 
+ */
 export const organizeByProducer = (orders: Order[]) => {
-    const organizedOrders: OrganizedOrders = {
-        SolarBuddhica: {
-            orders: [],
-            counts: {
-                orders: 0,
-                doses: 0,
-                expiredDoses: 0,
-                dosesUsed: 0,
-                dosesLeft: 0
-            }
-        },
-        Zerpfy: {
-            orders: [],
-            counts: {
-                orders: 0,
-                doses: 0,
-                expiredDoses: 0,
-                dosesUsed: 0,
-                dosesLeft: 0
-            }
-        },
-        Antiqua: {
-            orders: [],
-            counts: {
-                orders: 0,
-                doses: 0,
-                expiredDoses: 0,
-                dosesUsed: 0,
-                dosesLeft: 0
-            }
-        },
-    };
-
-    orders.forEach(order => {
-        organizedOrders[order.vaccine].orders.push(order);
-    });
-    return organizedOrders;
-};
-
-export const getProducerCounts = () => {
-    
+    try {   
+        const organizedOrders: OrganizedOrders = {
+            SolarBuddhica: [],
+            Zerpfy: [],
+            Antiqua: []
+        };
+        orders.forEach(order => {
+            organizedOrders[order.vaccine].push(order);
+        });
+        return organizedOrders;
+    } catch (err) {
+        throw new Error(err.message);
+    }
 };
 
 export const getAllOrders = async () => {
