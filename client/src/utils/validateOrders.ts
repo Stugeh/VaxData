@@ -1,8 +1,6 @@
-import {OrganizedOrders} from '../types';
+import { OrganizedOrders } from '../types';
 
-const validateData = (data: unknown): OrganizedOrders => {
-    // TODO write type guards for all fields
-    return data as OrganizedOrders;
-};
+// TODO write type guards for all fields
+const validateData = (data: unknown): OrganizedOrders => data as OrganizedOrders;
 
 export default validateData;
