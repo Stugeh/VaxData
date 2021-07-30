@@ -35,12 +35,16 @@
     },
     "rules": {
         "no-void": 0,
+        "no-shadow": 0,
         "import/extensions": 0,
         "react/react-in-jsx-scope": 0,
         "@typescript-eslint/no-explicit-any": 1,
         "@typescript-eslint/explicit-function-return-type": 0,
         "@typescript-eslint/explicit-module-boundary-types": 0,
         "@typescript-eslint/no-unsafe-member-access": 0,
+        "@typescript-eslint/no-shadow": [
+            "error"
+        ],
         "@typescript-eslint/no-unused-vars": [
             "error",
             {
