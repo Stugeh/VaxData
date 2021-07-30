@@ -1,4 +1,5 @@
 {
+    "private": true,
     "scripts": {
         "test": "cd server && yarn run test && cd ../client && yarn run test",
         "build": "cd client && yarn run build && cd ../server && yarn run tsc",
@@ -6,5 +7,8 @@
         "server": "cd server && yarn run dev",
         "client": "cd client && yarn start",
         "install": "cd server && yarn install && cd ../client yarn install"
+    },
+    "dependencies": {
+        "react-scripts": "^4.0.3"
     }
 }
