@@ -1,19 +1,23 @@
 import mongoose from 'mongoose';
 
 import {MONGOURL} from '../../src/config';
-import {getAllOrders} from '../../src/services/orderService';
+import {getAllOrders, organizeByProducer} from '../../src/services/orderService';
+import {VaccineOrder as Order, VaccineName} from '../../src/types';
 
 describe('Order service', () => {
     // Realistically i would have to create a separate
     // database for testing that's initialized every time but
-    // since we wont be inserting or deleting info in
-    // production db im just using the production db
-    // without initializing it.
-    mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true });
+    // since we wont be mutating data in the production 
+    // db im just using it without initializing.
+    mongoose.connect(
+        MONGOURL,
+        { useNewUrlParser: true, useUnifiedTopology: true }
+    );
+
+    let orders: Order[];
 
     it('getAll can fetch orders', async () => {
-        const orders = await getAllOrders();
-        const order = orders[0];
+        orders = await getAllOrders();
         const keys = [
             'orderId', 'healthCareDistrict', 'orderNumber',
             'responsiblePerson', 'injections', 'arrived',
@@ -21,9 +25,26 @@ describe('Order service', () => {
         ];
         expect(orders.length).not.toBe(0);
         keys.forEach(key =>
-            expect(order).toHaveProperty(key)
+            expect(orders[0]).toHaveProperty(key)
         );
     });
+
+    it('organizeByProducer', () => {
+        const vaccines = [
+            VaccineName['Antiqua'],
+            VaccineName['Solar'],
+            VaccineName['Zerpfy']
+        ];
+        const organized = organizeByProducer(orders);
+        let totalOrganizedOrders = 0;
+        vaccines.forEach(name => {   
+            expect(organized).toHaveProperty(name);
+            totalOrganizedOrders += organized[name].length;
+        });
+        expect(totalOrganizedOrders).toBe(orders.length);
+
+    });
+
 
 
     
