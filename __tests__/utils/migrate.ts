@@ -8,7 +8,7 @@ import {
     orderFilePaths,
     invalidOrderStrings,
     vaxStrings
-} from '../testHelper';
+} from '../../testHelper';
 
 describe('Testing migrate scripts', () => {
 
