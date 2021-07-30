@@ -1,8 +1,6 @@
-
-
 export type HealthCareDistrict = 'HYKS' | 'KYS' | 'OYS' | 'TAYS' | 'TYKS';
 
-export enum VaccineName {
+export enum ProducerName {
     Solar = 'SolarBuddhica',
     Zerpfy = 'Zerpfy',
     Antiqua = 'Antiqua'
@@ -15,9 +13,9 @@ export type Order = {
     responsiblePerson: string,
     injections: number,
     arrived: string,
-    vaccine: VaccineName
+    vaccine: ProducerName
 };
 
 export type OrganizedOrders = {
-    [key in VaccineName]: Order[]
+    [key in ProducerName]: Order[]
 };
