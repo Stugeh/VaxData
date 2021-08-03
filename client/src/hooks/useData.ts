@@ -1,10 +1,26 @@
-import { OrganizedOrders } from '../types';
+import { DateAndOrders } from '../types';
+import { getOrdersBeforeDate } from '../utils/dataHelpers';
 
-type useDataInput = {
-    data: OrganizedOrders,
-    date: Date
-}
+const useData = ({ orders, date }: DateAndOrders) => {
+  // how many total orders / vaccines
+  console.log('asd');
+  const totalOrders = getOrdersBeforeDate({ orders, date });
+  // how many arrived on the day
 
-const useData = ({ data, date }: useDataInput) => {
+  // how many vaxes used
 
+  // how many orders and vaxes per producer
+
+  // how many bottles have expired on that day
+
+  // how many vaccines expired before use
+
+  // how many usable vaccines
+
+  // how many vaccines will expire within 4 days
+  return {
+    totalOrders,
+  };
 };
+
+export default useData;
