@@ -12,7 +12,10 @@ import {
  * @returns 
  */
 export const organizeByProducer = (orders: Order[]) => {
-    try {   
+    try {
+        orders.sort((a, b) => (
+            new Date(a.arrived).getTime() - new Date(b.arrived).getTime()
+        ));
         const organizedOrders: OrganizedOrders = {
             SolarBuddhica: [],
             Zerpfy: [],
@@ -21,6 +24,7 @@ export const organizeByProducer = (orders: Order[]) => {
         orders.forEach(order => {
             organizedOrders[order.vaccine].push(order);
         });
+
         return organizedOrders;
     } catch (err) {
         throw new Error(err.message);
