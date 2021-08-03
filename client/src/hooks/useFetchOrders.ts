@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { OrganizedOrders } from '../types';
-import validateData from '../utils/validateOrders';
+import validateOrders from '../utils/validateOrders';
 import { apiBaseUrl } from '../constants';
 
 const initData: OrganizedOrders = {
@@ -19,7 +19,7 @@ const useFetchOrders = () => {
     const fetchData = async () => {
       try {
         const resp = await axios.get<OrganizedOrders>(`${apiBaseUrl}orders/`);
-        const body = validateData(resp.data);
+        const body = validateOrders(resp.data);
         setOrders(body);
       } catch (err) {
         setError(err);
