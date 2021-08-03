@@ -12,7 +12,7 @@ const initData: OrganizedOrders = {
 };
 
 const useFetchOrders = () => {
-  const [data, setData] = useState<OrganizedOrders>(initData);
+  const [orders, setOrders] = useState<OrganizedOrders>(initData);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const useFetchOrders = () => {
       try {
         const resp = await axios.get<OrganizedOrders>(`${apiBaseUrl}orders/`);
         const body = validateData(resp.data);
-        setData(body);
+        setOrders(body);
       } catch (err) {
         setError(err);
       }
@@ -28,7 +28,7 @@ const useFetchOrders = () => {
     void fetchData();
   }, []);
 
-  return { data, error };
+  return { orders, error };
 };
 
 export default useFetchOrders;
