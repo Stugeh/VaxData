@@ -12,3 +12,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.date-picker{
+  z-index: 10;
+  margin-left: 10px;
+  border-radius: 5px;
+  background-color: white;
+}
