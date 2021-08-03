@@ -13,18 +13,16 @@ const TopBar = ({ date, setDate }: {
 }) => (
   <AppBar position="static">
     <Toolbar>
-      <Typography variant="h4">
+      <Typography variant="h4" style={{ marginRight: '20px' }}>
         VaxData
       </Typography>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
-          className="date-picker"
           disableToolbar
+          className="date-picker"
           variant="inline"
           format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
+          label="Pick date to examine"
           value={date}
           onChange={(newDate) => setDate(newDate)}
           KeyboardButtonProps={{
