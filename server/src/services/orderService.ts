@@ -14,7 +14,7 @@ import {
 export const organizeByProducer = (orders: Order[]) => {
     try {
         orders.sort((a, b) => (
-            new Date(a.arrived).getTime() - new Date(b.arrived).getTime()
+            new Date(b.arrived).getTime() - new Date(a.arrived).getTime()
         ));
         const organizedOrders: OrganizedOrders = {
             SolarBuddhica: [],
