@@ -1,7 +1,7 @@
 export type HealthCareDistrict = 'HYKS' | 'KYS' | 'OYS' | 'TAYS' | 'TYKS';
 
 export enum ProducerName {
-    Solar = 'SolarBuddhica',
+    SolarBuddhica = 'SolarBuddhica',
     Zerpfy = 'Zerpfy',
     Antiqua = 'Antiqua'
 }
