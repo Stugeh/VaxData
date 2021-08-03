@@ -14,5 +14,12 @@
             "es2019",
             "dom"
         ]
-    }
+    },
+    "exclude": [
+        "node_modules",
+        "bower_components",
+        "jspm_packages",
+        "utils/migrate.js",
+        "__tests__/utils/migrate.js"
+    ],
 }
