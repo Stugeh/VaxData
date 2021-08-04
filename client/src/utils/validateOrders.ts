@@ -51,7 +51,7 @@ const parseString = (str: unknown): string => {
 };
 
 const parseIntFromString = (num: unknown): number => {
-  if (!num || !isString(num) || !isIntString) throw new Error('Invalid or missing number');
+  if (!num || !isString(num) || !isIntString(num)) throw new Error('Invalid or missing number');
   const parsed = parseInt(num, 10);
   if (!isNumber(parsed)) throw new Error('Invalid or missing number');
   return parsed;
@@ -62,8 +62,24 @@ const parseProducer = (producer: unknown): ProducerName => {
   return ProducerName[producer];
 };
 
-const parseVaccination = (vaccination: unknown): Vaccination => {
+const parseGender = (gender: unknown):Gender => {
+  if (!gender || !isGender(gender)) throw new Error('Incorrect or missing gender');
+  return gender;
+};
 
+const parseSrcBottle = (bottle: unknown): string => {
+  if (!bottle || !isString(bottle)) throw new Error('Invalid or missing bottle');
+  return bottle;
+};
+
+const parseVaccination = (vaccination: unknown): Vaccination => {
+  if (!vaccination || !isObject(vaccination)) throw new Error('vaccination missing or is not an object');
+  return {
+    vaccinationId: parseId(vaccination.vaccinationId),
+    gender: parseGender(vaccination.gender),
+    sourceBottle: parseSrcBottle(vaccination.sourceBottle),
+    injected: parseDate(vaccination.injected),
+  };
 };
 
 const parseVaccinations = (vaccinations: unknown): Vaccination[] => {
@@ -87,15 +103,20 @@ const parseOrder = (order: unknown):Order => {
 };
 
 const parseProducerArrays = (data: UnknownOrders): Orders => {
-  const producers: ProducerName[] = [
+  const producers = [
     ProducerName.SolarBuddhica, ProducerName.Zerpfy, ProducerName.Antiqua,
   ];
-  const newOrders = producers.map((producer) => ({
-    producer: data[producer].map((order) => {
-      parseOrder(order);
-    }),
-  }));
-  return newOrders as Orders;
+  const newOrders: Orders = {
+    SolarBuddhica: [],
+    Zerpfy: [],
+    Antiqua: [],
+  };
+
+  producers.forEach((producer) => {
+    newOrders[producer] = data[producer]
+      .map((order) => parseOrder(order));
+  });
+  return newOrders;
 };
 
 const hasManufacturers = (data: unknown): data is UnknownOrders => {
@@ -116,7 +137,6 @@ const hasManufacturers = (data: unknown): data is UnknownOrders => {
   }
 };
 
-// TODO write type guards for all fields
 const validateOrders = (data: unknown): Orders|null => {
   try {
     if (!hasManufacturers(data)) throw new Error('missing manufacturer');
