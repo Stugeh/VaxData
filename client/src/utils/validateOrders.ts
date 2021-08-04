@@ -8,8 +8,6 @@ const isString = (text: unknown): text is string => typeof text === 'string' || 
 
 const isNumber = (num: unknown): num is number => typeof num === 'number' || num instanceof Number;
 
-const isIntString = (numString: string): boolean => Boolean(parseInt(numString, 10));
-
 const isDate = (date: string): boolean => Boolean(Date.parse(date));
 
 const isArray = (arr: unknown): arr is Array<unknown> => Array.isArray(arr) || arr instanceof Array;
@@ -50,11 +48,9 @@ const parseString = (str: unknown): string => {
   return str;
 };
 
-const parseIntFromString = (num: unknown): number => {
-  if (!num || !isString(num) || !isIntString(num)) throw new Error('Invalid or missing number');
-  const parsed = parseInt(num, 10);
-  if (!isNumber(parsed)) throw new Error('Invalid or missing number');
-  return parsed;
+const parseNumber = (num: unknown): number => {
+  if (num === null || !isNumber(num)) throw new Error('Invalid or missing number');
+  return num;
 };
 
 const parseProducer = (producer: unknown): ProducerName => {
@@ -93,9 +89,9 @@ const parseOrder = (order: unknown):Order => {
   return {
     orderId: parseId(order.orderId),
     healthCareDistrict: parseDistrict(order.healthCareDistrict),
-    orderNumber: parseIntFromString(order.orderNumber),
+    orderNumber: parseNumber(order.orderNumber),
     responsiblePerson: parseString(order.responsiblePerson),
-    injections: parseIntFromString(order.injections),
+    injections: parseNumber(order.injections),
     arrived: parseDate(order.arrived),
     vaccine: parseProducer(order.vaccine),
     vaccinations: parseVaccinations(order.vaccinations),
