@@ -1,16 +1,44 @@
-import { DateAndOrders } from '../types';
-import { getMainCounts, getOrdersBeforeDate } from '../utils/dataHelpers';
+import { useState, useEffect } from 'react';
+import { Counts, DateAndOrders, Orders } from '../types';
+import { getMainCounts, getOrdersBeforeDate, getOrdersOnDate } from '../utils/dataHelpers';
+
+const emptyOrders: Orders = {
+  SolarBuddhica: [],
+  Antiqua: [],
+  Zerpfy: [],
+};
+const emptyCounts: Counts = {
+  SolarBuddhica: {
+    vaccinations: 0,
+    orders: 0,
+    doses: 0,
+  },
+  Antiqua: {
+    vaccinations: 0,
+    orders: 0,
+    doses: 0,
+  },
+  Zerpfy: {
+    vaccinations: 0,
+    orders: 0,
+    doses: 0,
+  },
+};
 
 const useData = ({ orders, date }: DateAndOrders) => {
-  // how many total orders / vaccines
+  const [ordersBeforeDate, setOrdersBeforeDate] = useState(emptyOrders);
+  const [cumulativeCounts, setCumulativeCounts] = useState(emptyCounts);
+  const [ordersOnDate, setOrdersOnDate] = useState(emptyOrders);
+  const [countsOnDate, setCountsOnDate] = useState(emptyCounts);
 
-  const ordersBeforeDate = getOrdersBeforeDate({ orders, date });
-  const cumulativeCounts = getMainCounts(ordersBeforeDate);
-  // how many arrived on the day
+  useEffect(() => {
+    setOrdersBeforeDate(getOrdersBeforeDate({ orders, date }));
+    setCumulativeCounts(getMainCounts(ordersBeforeDate));
+    setOrdersOnDate(getOrdersOnDate({ orders, date }));
+    setCountsOnDate(getMainCounts(ordersOnDate));
+  }, [date, orders]);
 
   // how many vaxes used
-
-  // how many orders and vaxes per producer
 
   // how many bottles have expired on that day
 
@@ -20,7 +48,10 @@ const useData = ({ orders, date }: DateAndOrders) => {
 
   // how many vaccines will expire within 4 days
   return {
-    ordersBeforeDate, cumulativeCounts,
+    ordersBeforeDate,
+    cumulativeCounts,
+    ordersOnDate,
+    countsOnDate,
   };
 };
 
