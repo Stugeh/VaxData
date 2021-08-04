@@ -41,6 +41,7 @@ export type UnknownOrders = {
 export type Counts = {
     [key in ProducerName]: {
         orders: number
+        vaccinations: number,
         vaccines: number
     };
 }
