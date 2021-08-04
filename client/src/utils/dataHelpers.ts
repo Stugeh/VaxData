@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { isSameDay, isBefore } from 'date-fns';
 import {
   Counts, DateAndOrders, Orders, ProducerName, Order,
 } from '../types';
@@ -20,8 +21,12 @@ export const getLatestDate = (data: Orders): Date => {
 };
 
 export const ordersBefore = (date: Date, orders: Order[]) => (
+  orders.filter((order) => (isBefore(order.arrived, date)))
+);
+
+export const ordersOn = (date: Date, orders: Order[]) => (
   orders.filter((order) => (
-    order.arrived.getTime() < date.getTime()
+    isSameDay(order.arrived, date)
   ))
 );
 
@@ -31,20 +36,35 @@ export const getOrdersBeforeDate = ({ date, orders }: DateAndOrders) => ({
   Zerpfy: ordersBefore(date, orders.Zerpfy),
 });
 
+export const getOrdersOnDate = ({ date, orders }: DateAndOrders) => ({
+  SolarBuddhica: ordersOn(date, orders.SolarBuddhica),
+  Antiqua: ordersOn(date, orders.Antiqua),
+  Zerpfy: ordersOn(date, orders.Zerpfy),
+});
+
+export const getVaccinationCount = (orders: Order[]) => (
+  orders.flatMap((order) => order.vaccinations).length
+);
+
+export const getDoseCount = (orders: Order[]): number => {
+  const nums = orders.map((order) => order.injections);
+  return nums.reduce((acc, val) => acc + val);
+};
+
 export const getMainCounts = (orders: Orders): Counts => ({
   Antiqua: {
     orders: orders.Antiqua.length,
-    vaccines: orders.Antiqua
-      .flatMap((order) => order.vaccinations).length,
+    vaccinations: getVaccinationCount(orders.Antiqua),
+    vaccines: getDoseCount(orders.Antiqua),
   },
   SolarBuddhica: {
     orders: orders.SolarBuddhica.length,
-    vaccines: orders.SolarBuddhica
-      .flatMap((order) => order.vaccinations).length,
+    vaccinations: getVaccinationCount(orders.SolarBuddhica),
+    vaccines: getDoseCount(orders.SolarBuddhica),
   },
   Zerpfy: {
     orders: orders.Zerpfy.length,
-    vaccines: orders.Zerpfy
-      .flatMap((order) => order.vaccinations).length,
+    vaccinations: getVaccinationCount(orders.Zerpfy),
+    vaccines: getDoseCount(orders.Zerpfy),
   },
 });
