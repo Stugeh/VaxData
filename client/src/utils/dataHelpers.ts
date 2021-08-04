@@ -55,16 +55,16 @@ export const getMainCounts = (orders: Orders): Counts => ({
   Antiqua: {
     orders: orders.Antiqua.length,
     vaccinations: getVaccinationCount(orders.Antiqua),
-    vaccines: getDoseCount(orders.Antiqua),
+    doses: getDoseCount(orders.Antiqua),
   },
   SolarBuddhica: {
     orders: orders.SolarBuddhica.length,
     vaccinations: getVaccinationCount(orders.SolarBuddhica),
-    vaccines: getDoseCount(orders.SolarBuddhica),
+    doses: getDoseCount(orders.SolarBuddhica),
   },
   Zerpfy: {
     orders: orders.Zerpfy.length,
     vaccinations: getVaccinationCount(orders.Zerpfy),
-    vaccines: getDoseCount(orders.Zerpfy),
+    doses: getDoseCount(orders.Zerpfy),
   },
 });

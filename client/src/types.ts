@@ -42,7 +42,7 @@ export type Counts = {
     [key in ProducerName]: {
         orders: number
         vaccinations: number,
-        vaccines: number
+        doses: number
     };
 }
 
