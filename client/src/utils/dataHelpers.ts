@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import {
-  Counts, DateAndOrders, Orders, ProducerName,
+  Counts, DateAndOrders, Orders, ProducerName, Order,
 } from '../types';
 
 export const getLatestDate = (data: Orders): Date => {
@@ -19,13 +19,17 @@ export const getLatestDate = (data: Orders): Date => {
   return firstDates[0];
 };
 
-export const getOrdersBeforeDate = ({ date, orders }: DateAndOrders) => {
-  const keys = Object.keys(orders) as ProducerName[];
-  const filteredOrders = keys.map((key) => (
-    orders[key].filter((order) => order.arrived.getTime() < date.getTime())
-  ));
-  return filteredOrders;
-};
+export const ordersBefore = (date: Date, orders: Order[]) => (
+  orders.filter((order) => (
+    order.arrived.getTime() < date.getTime()
+  ))
+);
+
+export const getOrdersBeforeDate = ({ date, orders }: DateAndOrders) => ({
+  SolarBuddhica: ordersBefore(date, orders.SolarBuddhica),
+  Antiqua: ordersBefore(date, orders.Antiqua),
+  Zerpfy: ordersBefore(date, orders.Zerpfy),
+});
 
 export const getMainCounts = (orders: Orders): Counts => ({
   Antiqua: {
