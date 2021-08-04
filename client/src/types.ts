@@ -38,6 +38,13 @@ export type UnknownOrders = {
     [key in ProducerName]: unknown[]
 }
 
+export type Counts = {
+    [key in ProducerName]: {
+        orders: number
+        vaccines: number
+    };
+}
+
 export type DateAndOrders = {
     orders: Orders,
     date: Date

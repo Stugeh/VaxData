@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import { DateAndOrders, Orders, ProducerName } from '../types';
+import {
+  Counts, DateAndOrders, Orders, ProducerName,
+} from '../types';
 
 export const getLatestDate = (data: Orders): Date => {
   // if we don't have data return current date
@@ -24,3 +26,21 @@ export const getOrdersBeforeDate = ({ date, orders }: DateAndOrders) => {
   ));
   return filteredOrders;
 };
+
+export const getMainCounts = (orders: Orders): Counts => ({
+  Antiqua: {
+    orders: orders.Antiqua.length,
+    vaccines: orders.Antiqua
+      .flatMap((order) => order.vaccinations).length,
+  },
+  SolarBuddhica: {
+    orders: orders.SolarBuddhica.length,
+    vaccines: orders.SolarBuddhica
+      .flatMap((order) => order.vaccinations).length,
+  },
+  Zerpfy: {
+    orders: orders.Zerpfy.length,
+    vaccines: orders.Zerpfy
+      .flatMap((order) => order.vaccinations).length,
+  },
+});
