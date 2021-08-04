@@ -8,7 +8,11 @@ import TopBar from './components/TopBar';
 function App() {
   const { orders } = useFetchOrders();
   const [date, setDate] = useState<Date | null>(new Date());
-  const { totalOrders } = useData({ date, orders });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { totalOrders } = useData({
+    date: date || new Date(),
+    orders,
+  });
 
   useEffect(() => {
     setDate(getLatestDate(orders));
