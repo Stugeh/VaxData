@@ -16,7 +16,7 @@ export type Vaccination = {
     vaccinationId: string;
     gender: Gender;
     sourceBottle: string;
-    injected: string;
+    injected: Date;
 }
 
 export type Order = {
