@@ -2,29 +2,10 @@ import {
   Order, Orders, ProducerName, UnknownOrders, Gender, HealthCareDistrict, Vaccination,
 } from '../types';
 
-const isObject = (obj: unknown): obj is Record<string, unknown> => typeof obj === 'object' || obj instanceof Object;
-
-const isString = (text: unknown): text is string => typeof text === 'string' || text instanceof String;
-
-const isNumber = (num: unknown): num is number => typeof num === 'number' || num instanceof Number;
-
-const isDate = (date: string): boolean => Boolean(Date.parse(date));
-
-const isArray = (arr: unknown): arr is Array<unknown> => Array.isArray(arr) || arr instanceof Array;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isGender = (param: any): param is Gender => Object.values(Gender).includes(param);
-
-const isHealthcareDistrict = (district: unknown): district is HealthCareDistrict => {
-  if (!isString(district)) throw new Error('district must be a string');
-  const districts = ['HYKS', 'KYS', 'OYS', 'TAYS', 'TYKS'];
-  return districts.includes(district);
-};
-
-const isProducer = (producer: string): producer is ProducerName => {
-  const producers = ['SolarBuddhica', 'Zerpfy', 'Antiqua'];
-  return producers.includes(producer);
-};
+import {
+  isNumber, isString, isObject, isArray, hasManufacturers, isHealthcareDistrict,
+  isDate, isProducer, isGender,
+} from './typeCheckers';
 
 const parseId = (id: unknown): string => {
   if (!id || !isString(id)) throw new Error('Invalid or missing id');
@@ -98,6 +79,8 @@ const parseOrder = (order: unknown):Order => {
   };
 };
 
+// Parses the arrays under all the keys of an Orders object.
+// and returns the completely parsed Orders.
 const parseProducerArrays = (data: UnknownOrders): Orders => {
   const producers = [
     ProducerName.SolarBuddhica, ProducerName.Zerpfy, ProducerName.Antiqua,
@@ -113,24 +96,6 @@ const parseProducerArrays = (data: UnknownOrders): Orders => {
       .map((order) => parseOrder(order));
   });
   return newOrders;
-};
-
-const hasManufacturers = (data: unknown): data is UnknownOrders => {
-  try {
-    if (!isObject(data)) throw new Error('not an object');
-    const producers = Object.keys(ProducerName);
-    producers.forEach((producer) => {
-      if (!Object.keys(data).includes(producer)) {
-        throw new Error('Missing key');
-      }
-      if (!isArray(data[producer])) {
-        throw new Error(`data under key: ${producer} was not an array.`);
-      }
-    });
-    return true;
-  } catch (err) {
-    return false;
-  }
 };
 
 const validateOrders = (data: unknown): Orders|null => {
