@@ -18,6 +18,9 @@ export const getLatestDate = (data: Orders): Date => {
 };
 
 export const getOrdersBeforeDate = ({ date, orders }: DateAndOrders) => {
-  console.log('getOrdersBefore', date, orders);
-  return 0;
+  const keys = Object.keys(orders) as ProducerName[];
+  const filteredOrders = keys.map((key) => (
+    orders[key].filter((order) => order.arrived.getTime() < date.getTime())
+  ));
+  return filteredOrders;
 };

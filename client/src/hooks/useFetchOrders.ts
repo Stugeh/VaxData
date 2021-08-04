@@ -20,7 +20,7 @@ const useFetchOrders = () => {
       try {
         const resp = await axios.get<Orders>(`${apiBaseUrl}orders/`);
         const body = validateOrders(resp.data);
-        if (!body) throw new Error('data failed to validate or was null');
+        if (body === null) throw new Error('data failed to validate or was null');
         setOrders(body);
       } catch (err) {
         setError(err);

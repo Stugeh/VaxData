@@ -9,7 +9,7 @@ function App() {
   const { orders } = useFetchOrders();
   const [date, setDate] = useState<Date | null>(new Date());
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { totalOrders } = useData({
+  const { ordersBeforeDate } = useData({
     date: date || new Date(),
     orders,
   });

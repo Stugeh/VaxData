@@ -3,8 +3,8 @@ import { getOrdersBeforeDate } from '../utils/dataHelpers';
 
 const useData = ({ orders, date }: DateAndOrders) => {
   // how many total orders / vaccines
-  console.log('asd');
-  const totalOrders = getOrdersBeforeDate({ orders, date });
+
+  const ordersBeforeDate = getOrdersBeforeDate({ orders, date });
   // how many arrived on the day
 
   // how many vaxes used
@@ -19,7 +19,7 @@ const useData = ({ orders, date }: DateAndOrders) => {
 
   // how many vaccines will expire within 4 days
   return {
-    totalOrders,
+    ordersBeforeDate,
   };
 };
 

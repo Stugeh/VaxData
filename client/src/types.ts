@@ -40,5 +40,5 @@ export type UnknownOrders = {
 
 export type DateAndOrders = {
     orders: Orders,
-    date: Date | null
+    date: Date
 }
