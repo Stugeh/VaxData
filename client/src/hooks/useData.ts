@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Counts, DateAndOrders, Orders } from '../types';
-import { getMainCounts, getOrdersBeforeDate, getOrdersOnDate } from '../utils/dataHelpers';
+import {
+  Counts, DateAndOrders, Orders, Vaccination,
+} from '../types';
+import {
+  getMainCounts, getOrdersBeforeDate, getOrdersOnDate, getVaccinationsOnDate,
+} from '../utils/dataHelpers';
 
 const emptyOrders: Orders = {
   SolarBuddhica: [],
@@ -25,17 +29,22 @@ const emptyCounts: Counts = {
   },
 };
 
+const emptyVaccinations: Vaccination[] = [];
+
 const useData = ({ orders, date }: DateAndOrders) => {
   const [ordersBeforeDate, setOrdersBeforeDate] = useState(emptyOrders);
   const [cumulativeCounts, setCumulativeCounts] = useState(emptyCounts);
   const [ordersOnDate, setOrdersOnDate] = useState(emptyOrders);
   const [countsOnDate, setCountsOnDate] = useState(emptyCounts);
+  const [vaccinationsToday, setVaccinationsToday] = useState(emptyVaccinations);
+  const dosesToday = vaccinationsToday.length;
 
   useEffect(() => {
     setOrdersBeforeDate(getOrdersBeforeDate({ orders, date }));
     setCumulativeCounts(getMainCounts(ordersBeforeDate));
     setOrdersOnDate(getOrdersOnDate({ orders, date }));
     setCountsOnDate(getMainCounts(ordersOnDate));
+    setVaccinationsToday(getVaccinationsOnDate(orders, date));
   }, [date, orders]);
 
   // how many vaxes used
@@ -52,6 +61,8 @@ const useData = ({ orders, date }: DateAndOrders) => {
     cumulativeCounts,
     ordersOnDate,
     countsOnDate,
+    dosesToday,
+    vaccinationsToday,
   };
 };
 

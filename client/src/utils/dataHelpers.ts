@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { isSameDay, isBefore } from 'date-fns';
 import {
-  Counts, DateAndOrders, Orders, ProducerName, Order,
+  Counts, DateAndOrders, Orders, ProducerName, Order, Vaccination,
 } from '../types';
 
 export const getLatestDate = (data: Orders): Date => {
@@ -49,6 +49,17 @@ export const getVaccinationCount = (orders: Order[]) => (
 export const getDoseCount = (orders: Order[]): number => {
   const nums = orders.map((order) => order.injections);
   return nums.reduce((acc, val) => acc + val);
+};
+
+export const getVaccinationsOnDate = (orders: Orders, date: Date): Vaccination[] => {
+  const allData = [
+    ...orders.Antiqua,
+    ...orders.SolarBuddhica,
+    ...orders.Zerpfy,
+  ];
+  const vaccinations = allData.flatMap((order) => order.vaccinations);
+  return vaccinations
+    .filter((vax) => isSameDay(vax.injected, date));
 };
 
 export const getMainCounts = (orders: Orders): Counts => ({
