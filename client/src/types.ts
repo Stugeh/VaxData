@@ -57,3 +57,12 @@ export type BarChartObject = {
 }
 
 export type BarChartData = BarChartObject[]
+
+export type DataOutput = {
+    ordersBeforeDate: Orders,
+    cumulativeCounts: Counts,
+    ordersOnDate: Orders,
+    countsOnDate: Counts,
+    dosesToday: number,
+    vaccinationsToday: Vaccination[],
+  }

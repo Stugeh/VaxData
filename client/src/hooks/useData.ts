@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  Counts, DateAndOrders, Orders, Vaccination,
+  Counts, DataOutput, DateAndOrders, Orders, Vaccination,
 } from '../types';
 
 import {
@@ -36,7 +36,7 @@ const emptyCounts: Counts = {
 
 const emptyVaccinations: Vaccination[] = [];
 
-const useData = ({ orders, date }: DateAndOrders) => {
+const useData = ({ orders, date }: DateAndOrders): DataOutput => {
   const [ordersBeforeDate, setOrdersBeforeDate] = useState(emptyOrders);
   const [cumulativeCounts, setCumulativeCounts] = useState(emptyCounts);
   const [ordersOnDate, setOrdersOnDate] = useState(emptyOrders);
