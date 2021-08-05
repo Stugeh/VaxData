@@ -12,6 +12,24 @@ const ChartContainer = ({ data }: {data: DataOutput}) => {
         keys={['orders']}
         index="producer"
       />
+      <BarChart
+        header="Cumulative Orders"
+        data={countsToBarChart(cumulativeCounts)}
+        keys={['orders']}
+        index="producer"
+      />
+      <BarChart
+        header="Cumulative Orders"
+        data={countsToBarChart(cumulativeCounts)}
+        keys={['orders']}
+        index="producer"
+      />
+      <BarChart
+        header="Cumulative Orders"
+        data={countsToBarChart(cumulativeCounts)}
+        keys={['orders']}
+        index="producer"
+      />
     </div>
   );
 };
