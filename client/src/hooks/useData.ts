@@ -45,11 +45,17 @@ const useData = ({ orders, date }: DateAndOrders): DataOutput => {
   const dosesToday = vaccinationsToday.length;
 
   useEffect(() => {
-    setOrdersBeforeDate(getOrdersBeforeDate({ orders, date }));
-    setCumulativeCounts(getMainCounts(ordersBeforeDate));
-    setOrdersOnDate(getOrdersOnDate({ orders, date }));
-    setCountsOnDate(getMainCounts(ordersOnDate));
-    setVaccinationsToday(getVaccinationsOnDate(orders, date));
+    const priorOrders = getOrdersBeforeDate({ orders, date });
+    const priorCounts = getMainCounts(priorOrders);
+    const ordersToday = getOrdersOnDate({ orders, date });
+    const countsToday = getMainCounts(ordersToday);
+    const injectionsToday = getVaccinationsOnDate(orders, date);
+
+    setOrdersBeforeDate(priorOrders);
+    setCumulativeCounts(priorCounts);
+    setOrdersOnDate(ordersToday);
+    setCountsOnDate(countsToday);
+    setVaccinationsToday(injectionsToday);
   }, [date, orders]);
 
   // how many vaxes used
