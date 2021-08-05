@@ -1,7 +1,7 @@
 import { BarChartData, Counts } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const CountsToBarChart = (counts: Counts): BarChartData => ([
+export const countsToBarChart = (counts: Counts): BarChartData => ([
   {
     producer: 'SolarBuddhica',
     orders: counts.SolarBuddhica.orders,
@@ -22,5 +22,24 @@ export const CountsToBarChart = (counts: Counts): BarChartData => ([
     vaccinations: counts.Zerpfy.vaccinations,
     doses: counts.Zerpfy.doses,
     expired: counts.Zerpfy.expired,
+  },
+  {
+    producer: 'total',
+    orders:
+      counts.SolarBuddhica.orders
+      + counts.Antiqua.orders
+      + counts.Zerpfy.orders,
+    vaccinations:
+      counts.SolarBuddhica.vaccinations
+      + counts.Antiqua.vaccinations
+      + counts.Zerpfy.vaccinations,
+    doses:
+      counts.SolarBuddhica.doses
+      + counts.Antiqua.doses
+      + counts.Zerpfy.doses,
+    expired:
+      counts.SolarBuddhica.expired
+      + counts.Antiqua.expired
+      + counts.Zerpfy.expired,
   },
 ]);
