@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import {
   Counts, DateAndOrders, Orders, Vaccination,
 } from '../types';
+
 import {
-  getMainCounts, getOrdersBeforeDate, getOrdersOnDate, getVaccinationsOnDate,
+  getMainCounts, getOrdersBeforeDate, getOrdersOnDate,
+  getVaccinationsOnDate,
 } from '../utils/dataHelpers';
 
 const emptyOrders: Orders = {
@@ -16,16 +18,19 @@ const emptyCounts: Counts = {
     vaccinations: 0,
     orders: 0,
     doses: 0,
+    expired: 0,
   },
   Antiqua: {
     vaccinations: 0,
     orders: 0,
     doses: 0,
+    expired: 0,
   },
   Zerpfy: {
     vaccinations: 0,
     orders: 0,
     doses: 0,
+    expired: 0,
   },
 };
 

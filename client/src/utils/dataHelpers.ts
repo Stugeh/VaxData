@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { isSameDay, isBefore } from 'date-fns';
+import { isSameDay, isBefore, addDays } from 'date-fns';
 import {
   Counts, DateAndOrders, Orders, ProducerName, Order, Vaccination,
 } from '../types';
@@ -62,20 +62,35 @@ export const getVaccinationsOnDate = (orders: Orders, date: Date): Vaccination[]
     .filter((vax) => isSameDay(vax.injected, date));
 };
 
+export const getExpired = (orders: Order[]) => (
+  orders.filter((order) => isBefore(
+    addDays(order.arrived, 30),
+    new Date(),
+  ))
+);
+
+export const getExpiredCount = (orders: Order[]): number => {
+  const expired = getExpired(orders);
+  return expired.length;
+};
+
 export const getMainCounts = (orders: Orders): Counts => ({
   Antiqua: {
     orders: orders.Antiqua.length,
     vaccinations: getVaccinationCount(orders.Antiqua),
     doses: getDoseCount(orders.Antiqua),
+    expired: getExpiredCount(orders.Antiqua),
   },
   SolarBuddhica: {
     orders: orders.SolarBuddhica.length,
     vaccinations: getVaccinationCount(orders.SolarBuddhica),
     doses: getDoseCount(orders.SolarBuddhica),
+    expired: getExpiredCount(orders.SolarBuddhica),
   },
   Zerpfy: {
     orders: orders.Zerpfy.length,
     vaccinations: getVaccinationCount(orders.Zerpfy),
     doses: getDoseCount(orders.Zerpfy),
+    expired: getExpiredCount(orders.Zerpfy),
   },
 });
