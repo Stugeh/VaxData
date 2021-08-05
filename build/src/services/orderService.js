@@ -23,6 +23,7 @@ require('../models/vaccination');
  */
 const organizeByProducer = (orders) => {
     try {
+        orders.sort((a, b) => (new Date(b.arrived).getTime() - new Date(a.arrived).getTime()));
         const organizedOrders = {
             SolarBuddhica: [],
             Zerpfy: [],

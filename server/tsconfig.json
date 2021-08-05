@@ -20,6 +20,6 @@
         "bower_components",
         "jspm_packages",
         "utils/migrate.js",
-        "__tests__/utils/migrate.js"
+        "__tests__",
     ],
 }
