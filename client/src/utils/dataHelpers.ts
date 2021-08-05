@@ -48,7 +48,9 @@ export const getVaccinationCount = (orders: Order[]) => (
 
 export const getDoseCount = (orders: Order[]): number => {
   const nums = orders.map((order) => order.injections);
-  return nums.reduce((acc, val) => acc + val);
+  return nums.length === 0
+    ? 0
+    : nums.reduce((acc, val) => acc + val);
 };
 
 export const getVaccinationsOnDate = (orders: Orders, date: Date): Vaccination[] => {
