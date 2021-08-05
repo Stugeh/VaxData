@@ -1,8 +1,14 @@
 import { ResponsiveBar } from '@nivo/bar';
+import { Card, Typography } from '@material-ui/core';
 import { BarChartData } from '../types';
 
-const BarChart = (data: BarChartData, keys: string[], index: string) => (
-  <div className="chart">
+type ChartInput = { data: BarChartData, keys: string[], index: string, header: string}
+
+const BarChart = ({
+  data, keys, index, header,
+}:ChartInput) => (
+  <Card className="chart">
+    <Typography variant="h6">{ header }</Typography>
     <ResponsiveBar
       data={data}
       keys={keys}
@@ -13,13 +19,12 @@ const BarChart = (data: BarChartData, keys: string[], index: string) => (
       padding={0.3}
       valueScale={{ type: 'linear' }}
       indexScale={{ type: 'band', round: true }}
-      colors={{ scheme: 'nivo' }}
+      colors={{ scheme: 'category10' }}
       borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: { index },
         legendPosition: 'middle',
         legendOffset: 32,
       }}
@@ -50,9 +55,8 @@ const BarChart = (data: BarChartData, keys: string[], index: string) => (
           ],
         },
       ]}
-
     />
-  </div>
+  </Card>
 );
 
 export default BarChart;
