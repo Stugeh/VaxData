@@ -8,13 +8,13 @@ const BarChart = ({
   data, keys, index, header,
 }:ChartInput) => (
   <Card className="chart">
-    <Typography variant="h6">{ header }</Typography>
+    <Typography variant="h5">{ header }</Typography>
     <ResponsiveBar
       data={data}
       keys={keys}
       indexBy={index}
       margin={{
-        top: 50, right: 130, bottom: 50, left: 60,
+        top: 10, right: 100, bottom: 50, left: 60,
       }}
       padding={0.3}
       valueScale={{ type: 'linear' }}
