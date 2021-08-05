@@ -4,15 +4,13 @@ import useFetchOrders from './hooks/useFetchOrders';
 import useData from './hooks/useData';
 import { getLatestDate } from './utils/dataHelpers';
 import TopBar from './components/TopBar';
-import BarChart from './components/BarChart';
-
-import { countsToBarChart } from './utils/chartFormatters';
+import ChartContainer from './components/ChartContainer';
 
 function App() {
   const { orders } = useFetchOrders();
   const [date, setDate] = useState<Date | null>(new Date());
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { cumulativeCounts } = useData({
+  const data = useData({
     date: date || new Date(),
     orders,
   });
@@ -24,12 +22,7 @@ function App() {
   return (
     <div className="App">
       <TopBar setDate={setDate} date={date} />
-      <BarChart
-        header="Cumulative Orders"
-        data={countsToBarChart(cumulativeCounts)}
-        keys={['orders']}
-        index="producer"
-      />
+      <ChartContainer data={data} />
     </div>
   );
 }
