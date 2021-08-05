@@ -45,9 +45,11 @@ const useData = ({ orders, date }: DateAndOrders): DataOutput => {
   const dosesToday = vaccinationsToday.length;
 
   useEffect(() => {
+    // Order arrays
     const priorOrders = getOrdersBeforeDate({ orders, date });
-    const priorCounts = getMainCounts(priorOrders);
     const ordersToday = getOrdersOnDate({ orders, date });
+    // various counts
+    const priorCounts = getMainCounts(priorOrders);
     const countsToday = getMainCounts(ordersToday);
     const injectionsToday = getVaccinationsOnDate(orders, date);
 
