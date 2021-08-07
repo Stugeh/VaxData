@@ -17,7 +17,6 @@ const BarChart = ({
         top: 10, right: 120, bottom: 50, left: 60,
       }}
       padding={0.3}
-      valueScale={{ type: 'linear' }}
       indexScale={{ type: 'band', round: true }}
       colors={{ scheme: 'category10' }}
       borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
