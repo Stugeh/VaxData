@@ -82,6 +82,14 @@ export const getExpiredOrdersCount = (orders: Order[]): number => {
   return expired.length;
 };
 
+export const getExpiredDosesCount = (orders: Order[]): number => {
+  const expiredOrders = getExpiredOrders(orders);
+  const expiredDoseCounts = expiredOrders.map((order) => (
+    order.injections - order.vaccinations.length
+  ));
+  return expiredDoseCounts.reduce((sum, current) => sum + current);
+};
+
 export const getMainCounts = (orders: Orders): Counts => ({
   Antiqua: {
     orders: orders.Antiqua.length,
