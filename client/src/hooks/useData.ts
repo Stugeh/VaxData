@@ -72,6 +72,13 @@ const useData = ({ orders, date }: DateAndOrders): DataOutput => {
   // how many vaccines expired before use
 
   // how many usable vaccines
+  // const test = [
+  //   ...orders.Antiqua,
+  //   ...orders.SolarBuddhica,
+  //   ...orders.Zerpfy,
+  // ].map((order) => order.injections);
+
+  // console.log(test.reduce((a, b) => a + b));
 
   // how many vaccines will expire within 4 days
   return {

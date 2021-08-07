@@ -1,4 +1,10 @@
-import { ChartData, Counts } from '../types';
+import { ChartData, Counts, ProducerName } from '../types';
+
+const producers = [
+  ProducerName.SolarBuddhica,
+  ProducerName.Antiqua,
+  ProducerName.Zerpfy,
+];
 
 const getAvailableDoses = (counts: Counts[keyof Counts]) => (
   counts.doses - counts.expiredDoses - counts.vaccinations
@@ -8,62 +14,42 @@ const getAvailableOrders = (counts: Counts[keyof Counts]) => (
   counts.orders - counts.expiredOrders - counts.consumedOrders
 );
 
-export const vaccineCountsToChart = (counts: Counts): ChartData => ([
-  {
-    producer: 'SolarBuddhica',
-    used: counts.SolarBuddhica.vaccinations,
-    available: getAvailableDoses(counts.SolarBuddhica),
-    expired: counts.SolarBuddhica.expiredDoses,
-  },
-  {
-    producer: 'Antiqua',
-    used: counts.Antiqua.vaccinations,
-    available: getAvailableDoses(counts.Antiqua),
-    expired: counts.Antiqua.expiredDoses,
-  },
-  {
-    producer: 'Zerpfy',
-    used: counts.Zerpfy.vaccinations,
-    available: getAvailableDoses(counts.Zerpfy),
-    expired: counts.Zerpfy.expiredDoses,
-  },
-  {
+export const vaccineCountsToChart = (counts: Counts): ChartData => {
+  const chartData = producers.map((producer) => ({
+    producer,
+    used: counts[producer].vaccinations,
+    available: getAvailableDoses(counts[producer]),
+    expired: counts[producer].expiredDoses,
+  }));
+
+  const totals = {
     producer: 'total',
     used:
-        counts.SolarBuddhica.vaccinations
-        + counts.Antiqua.vaccinations
-        + counts.Zerpfy.vaccinations,
+          counts.SolarBuddhica.vaccinations
+          + counts.Antiqua.vaccinations
+          + counts.Zerpfy.vaccinations,
     available:
-        getAvailableDoses(counts.SolarBuddhica)
-        + getAvailableDoses(counts.Antiqua)
-        + getAvailableDoses(counts.Zerpfy),
+          getAvailableDoses(counts.SolarBuddhica)
+          + getAvailableDoses(counts.Antiqua)
+          + getAvailableDoses(counts.Zerpfy),
     expired:
-        counts.SolarBuddhica.expiredDoses
-        + counts.Antiqua.expiredDoses
-        + counts.Zerpfy.expiredDoses,
-  },
-]);
+          counts.SolarBuddhica.expiredDoses
+          + counts.Antiqua.expiredDoses
+          + counts.Zerpfy.expiredDoses,
+  };
 
-export const orderCountsToBarChart = (counts: Counts): ChartData => ([
-  {
-    producer: 'SolarBuddhica',
-    available: getAvailableOrders(counts.SolarBuddhica),
-    expired: counts.SolarBuddhica.expiredOrders,
-    consumed: counts.SolarBuddhica.consumedOrders,
-  },
-  {
-    producer: 'Antiqua',
-    available: getAvailableOrders(counts.Antiqua),
-    expired: counts.Antiqua.expiredOrders,
-    consumed: counts.Antiqua.consumedOrders,
-  },
-  {
-    producer: 'Zerpfy',
-    available: getAvailableOrders(counts.Zerpfy),
-    expired: counts.Zerpfy.expiredOrders,
-    consumed: counts.Zerpfy.consumedOrders,
-  },
-  {
+  return [...chartData, totals] as ChartData;
+};
+
+export const orderCountsToBarChart = (counts: Counts): ChartData => {
+  const chartData = producers.map((producer) => ({
+    producer,
+    available: getAvailableOrders(counts[producer]),
+    expired: counts[producer].expiredOrders,
+    consumed: counts[producer].consumedOrders,
+  }));
+
+  const totals = {
     producer: 'total',
     available:
       getAvailableOrders(counts.Antiqua)
@@ -77,5 +63,7 @@ export const orderCountsToBarChart = (counts: Counts): ChartData => ([
       counts.Antiqua.consumedOrders
       + counts.SolarBuddhica.consumedOrders
       + counts.Zerpfy.consumedOrders,
-  },
-]);
+  };
+
+  return [...chartData, totals] as ChartData;
+};
