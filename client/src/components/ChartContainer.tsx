@@ -1,33 +1,33 @@
-import { orderCountsToBarChart } from '../utils/chartFormatters';
+import { orderCountsToBarChart, vaccineCountsToChart } from '../utils/chartFormatters';
 import { DataOutput } from '../types';
 import BarChart from './BarChart';
 
 const ChartContainer = ({ data }: {data: DataOutput}) => {
-  const { cumulativeCounts } = data;
+  const { cumulativeCounts, countsOnDate } = data;
   return (
     <div className="chart-container">
       <BarChart
         header="Cumulative Orders"
         data={orderCountsToBarChart(cumulativeCounts)}
-        keys={['available', 'expired', 'consumed']}
+        keys={['available', 'consumed', 'expired']}
         index="producer"
       />
       <BarChart
         header="Cumulative doses"
-        data={orderCountsToBarChart(cumulativeCounts)}
-        keys={['used', 'available', 'expired']}
+        data={vaccineCountsToChart(cumulativeCounts)}
+        keys={['available', 'used', 'expired']}
         index="producer"
       />
       <BarChart
-        header="Cumulative Orders"
-        data={orderCountsToBarChart(cumulativeCounts)}
-        keys={['orders']}
+        header="Orders Today"
+        data={orderCountsToBarChart(countsOnDate)}
+        keys={['available', 'consumed', 'expired']}
         index="producer"
       />
       <BarChart
-        header="Cumulative Orders"
-        data={orderCountsToBarChart(cumulativeCounts)}
-        keys={['orders']}
+        header="Doses Today"
+        data={vaccineCountsToChart(countsOnDate)}
+        keys={['available', 'used', 'expired']}
         index="producer"
       />
     </div>
