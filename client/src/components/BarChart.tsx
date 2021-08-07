@@ -1,8 +1,8 @@
 import { ResponsiveBar } from '@nivo/bar';
 import { Card, Typography } from '@material-ui/core';
-import { BarChartData } from '../types';
+import { ChartData } from '../types';
 
-type ChartInput = { data: BarChartData, keys: string[], index: string, header: string}
+type ChartInput = { data: ChartData, keys: string[], index: string, header: string}
 
 const BarChart = ({
   data, keys, index, header,
