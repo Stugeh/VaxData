@@ -65,7 +65,6 @@ const useData = ({ orders, date }: DateAndOrders): DataOutput => {
     setCountsOnDate(countsToday);
     setVaccinationsToday(injectionsToday);
   }, [date, orders]);
-
   // how many vaxes used
 
   // how many bottles have expired on that day
