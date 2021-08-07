@@ -5,7 +5,7 @@ import {
 
 import {
   getMainCounts, getOrdersBeforeDate, getOrdersOnDate,
-  getVaccinationsOnDate, getConsumedOrders,
+  getVaccinationsOnDate,
 } from '../utils/dataHelpers';
 
 const emptyOrders: Orders = {
@@ -18,19 +18,25 @@ const emptyCounts: Counts = {
     vaccinations: 0,
     orders: 0,
     doses: 0,
+    expiredDoses: 0,
     expiredOrders: 0,
+    consumedOrders: 0,
   },
   Antiqua: {
     vaccinations: 0,
     orders: 0,
     doses: 0,
+    expiredDoses: 0,
     expiredOrders: 0,
+    consumedOrders: 0,
   },
   Zerpfy: {
     vaccinations: 0,
     orders: 0,
     doses: 0,
+    expiredDoses: 0,
     expiredOrders: 0,
+    consumedOrders: 0,
   },
 };
 
