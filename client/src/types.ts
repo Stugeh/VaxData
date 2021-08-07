@@ -54,11 +54,11 @@ export type DateAndOrders = {
     date: Date
 }
 
-export type BarChartObject = {
+export type ChartObject = {
     [key: string]: string | number
 }
 
-export type BarChartData = BarChartObject[]
+export type ChartData = ChartObject[]
 
 export type DataOutput = {
     ordersBeforeDate: Orders,
