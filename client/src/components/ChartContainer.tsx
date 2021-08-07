@@ -13,9 +13,9 @@ const ChartContainer = ({ data }: {data: DataOutput}) => {
         index="producer"
       />
       <BarChart
-        header="Cumulative Orders"
+        header="Cumulative doses"
         data={countsToBarChart(cumulativeCounts)}
-        keys={['orders']}
+        keys={['available', 'expired', 'vaccinations']}
         index="producer"
       />
       <BarChart
