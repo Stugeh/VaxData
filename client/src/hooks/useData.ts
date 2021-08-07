@@ -55,8 +55,8 @@ const useData = ({ orders, date }: DateAndOrders): DataOutput => {
     const priorOrders = getOrdersBeforeDate({ orders, date });
     const ordersToday = getOrdersOnDate({ orders, date });
     // various counts
-    const priorCounts = getMainCounts(priorOrders);
-    const countsToday = getMainCounts(ordersToday);
+    const priorCounts = getMainCounts({ orders: priorOrders, date });
+    const countsToday = getMainCounts({ orders: ordersToday, date });
     const injectionsToday = getVaccinationsOnDate(orders, date);
 
     setOrdersBeforeDate(priorOrders);
