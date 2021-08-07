@@ -13,40 +13,34 @@ export const vaccineCountsToChart = (counts: Counts): ChartData => ([
     producer: 'SolarBuddhica',
     used: counts.SolarBuddhica.vaccinations,
     available: getAvailableDoses(counts.SolarBuddhica),
-    expired: counts.SolarBuddhica.expiredOrders,
+    expired: counts.SolarBuddhica.expiredDoses,
   },
   {
     producer: 'Antiqua',
     used: counts.Antiqua.vaccinations,
     available: getAvailableDoses(counts.Antiqua),
-    expired: counts.Antiqua.expiredOrders,
+    expired: counts.Antiqua.expiredDoses,
   },
   {
     producer: 'Zerpfy',
     used: counts.Zerpfy.vaccinations,
     available: getAvailableDoses(counts.Zerpfy),
-    expired: counts.Zerpfy.expiredOrders,
+    expired: counts.Zerpfy.expiredDoses,
   },
   {
     producer: 'total',
     used:
-        counts.SolarBuddhica.orders
-        + counts.Antiqua.orders
-        + counts.Zerpfy.orders,
+        counts.SolarBuddhica.vaccinations
+        + counts.Antiqua.vaccinations
+        + counts.Zerpfy.vaccinations,
     available:
-        counts.SolarBuddhica.doses
-        + counts.Antiqua.doses
-        + counts.Zerpfy.doses
-        - counts.Zerpfy.expiredOrders
-        - counts.Zerpfy.vaccinations
-        - counts.Antiqua.expiredOrders
-        - counts.Antiqua.vaccinations
-        - counts.SolarBuddhica.expiredOrders
-        - counts.SolarBuddhica.vaccinations,
+        getAvailableDoses(counts.SolarBuddhica)
+        + getAvailableDoses(counts.Antiqua)
+        + getAvailableDoses(counts.Zerpfy),
     expired:
-        counts.SolarBuddhica.expiredOrders
-        + counts.Antiqua.expiredOrders
-        + counts.Zerpfy.expiredOrders,
+        counts.SolarBuddhica.expiredDoses
+        + counts.Antiqua.expiredDoses
+        + counts.Zerpfy.expiredDoses,
   },
 ]);
 
