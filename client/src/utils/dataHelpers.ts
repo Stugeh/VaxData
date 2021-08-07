@@ -64,15 +64,21 @@ export const getVaccinationsOnDate = (orders: Orders, date: Date): Vaccination[]
     .filter((vax) => isSameDay(vax.injected, date));
 };
 
-export const getExpired = (orders: Order[]) => (
+export const getExpiredOrders = (orders: Order[]) => (
   orders.filter((order) => isBefore(
     addDays(order.arrived, 30),
     new Date(),
   ))
 );
 
-export const getExpiredCount = (orders: Order[]): number => {
-  const expired = getExpired(orders);
+export const getConsumedOrdersCount = (orders: Order[]) => (
+  orders.filter((order) => (
+    order.injections === order.vaccinations.length
+  )).length
+);
+
+export const getExpiredOrdersCount = (orders: Order[]): number => {
+  const expired = getExpiredOrders(orders);
   return expired.length;
 };
 
@@ -81,18 +87,24 @@ export const getMainCounts = (orders: Orders): Counts => ({
     orders: orders.Antiqua.length,
     vaccinations: getVaccinationCount(orders.Antiqua),
     doses: getDoseCount(orders.Antiqua),
-    expired: getExpiredCount(orders.Antiqua),
+    expiredDoses: getExpiredDosesCount(orders.Antiqua)
+    expiredOrders: getExpiredOrdersCount(orders.Antiqua),
+    consumedOrders: getConsumedOrdersCount(orders.Antiqua),
   },
   SolarBuddhica: {
     orders: orders.SolarBuddhica.length,
     vaccinations: getVaccinationCount(orders.SolarBuddhica),
     doses: getDoseCount(orders.SolarBuddhica),
-    expired: getExpiredCount(orders.SolarBuddhica),
+    expiredDoses: getExpiredDosesCount(orders.SolarBuddhica)
+    expiredOrders: getExpiredOrdersCount(orders.SolarBuddhica),
+    consumedOrders: getConsumedOrdersCount(orders.SolarBuddhica),
   },
   Zerpfy: {
     orders: orders.Zerpfy.length,
     vaccinations: getVaccinationCount(orders.Zerpfy),
     doses: getDoseCount(orders.Zerpfy),
-    expired: getExpiredCount(orders.Zerpfy),
+    expiredDoses: getExpiredDosesCount(orders.Zerpfy),
+    expiredOrders: getExpiredOrdersCount(orders.Zerpfy),
+    consumedOrders: getConsumedOrdersCount(orders.Zerpfy),
   },
 });
