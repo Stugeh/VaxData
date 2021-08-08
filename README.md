@@ -9,7 +9,7 @@ After that create a .env file in the /server folder with the content:
 `MONGOURL=[INSERT MONGODB URL]`
 
 ## Project root commands:
-After that's done you can install the application from the project root with `yarn run install` which installs both the api and client.
+After that's done you can install the application from the project root with `yarn install` which installs both the api and client.
 
 ### `yarn run populate` 
 Will wipe your db and insert the data into it from the .source files in /server/src/data.
