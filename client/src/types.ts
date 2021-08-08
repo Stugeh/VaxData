@@ -69,6 +69,4 @@ export type DataOutput = {
     cumulativeCounts: Counts,
     ordersOnDate: Orders,
     countsOnDate: Counts,
-    dosesToday: number,
-    vaccinationsToday: Vaccination[],
   }
