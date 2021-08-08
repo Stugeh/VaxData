@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import path from 'path';
 import cors from 'cors';
 
 import { MONGOURL } from './config';
@@ -16,12 +17,16 @@ mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 /* app config */
 app.use(express.json());
-app.use(express.static('build'));
+app.use(express.static(path.join(__dirname, '../')));
+
 // middleware
 app.use(cors());
 
 // Routers
 app.use('/api/orders/', orderRouter);
+app.get('/', function (_req, res) {
+    res.sendFile(path.join(__dirname, '../index.html'));
+});
 
 
 export default app;

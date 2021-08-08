@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 const config_1 = require("./config");
 const orderRouter_1 = __importDefault(require("./routes/orderRouter"));
@@ -15,9 +16,12 @@ mongoose_1.default.connect(config_1.MONGOURL, { useNewUrlParser: true, useUnifie
     .catch((err) => console.log('err', err));
 /* app config */
 app.use(express_1.default.json());
-app.use(express_1.default.static('build'));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../')));
 // middleware
 app.use(cors_1.default());
 // Routers
 app.use('/api/orders/', orderRouter_1.default);
+app.get('/', function (_req, res) {
+    res.sendFile(path_1.default.join(__dirname, '../index.html'));
+});
 exports.default = app;
