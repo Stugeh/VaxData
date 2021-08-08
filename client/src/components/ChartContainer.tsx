@@ -30,6 +30,12 @@ const ChartContainer = ({ data }: {data: DataOutput}) => {
         keys={['used', 'expired']}
         index="producer"
       />
+      <BarChart
+        header="Doses expiring within 10 days"
+        data={vaccineCountsToChart(cumulativeCounts)}
+        keys={['expiring']}
+        index="producer"
+      />
     </div>
   );
 };
