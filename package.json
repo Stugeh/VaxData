@@ -5,9 +5,9 @@
     "main": "./src/index.js",
     "private": true,
     "scripts": {
-        "start": "node build/src/index.js",
+        "start": "node ./server/build/src/index.js",
         "test": "cd server && yarn run test && cd ../client && yarn run test",
-        "build": "rm -rf build && cd client && yarn run build && cd ../server && yarn run tsc",
+        "build": "rm -rf ./server/build && cd client && yarn run build && cd ../server && yarn run tsc",
         "server": "cd server && yarn run dev",
         "client": "cd client && yarn start",
         "populate": "cd server && yarn run migrate",
@@ -36,5 +36,8 @@
         "node": "14.17.x",
         "npm": "6.14.x",
         "yarn": "1.22.x"
+    },
+    "dependencies": {
+        "cross-env": "^7.0.3"
     }
 }
