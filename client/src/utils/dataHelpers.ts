@@ -105,19 +105,20 @@ export const getExpiredDosesCount = ({ orders, date }: {orders: Order[], date: D
   return expiredDoseCounts.reduce((sum, current) => sum + current);
 };
 
-// gets all orders that are expiring within 10 days from an Order[].
-export const getExpiringOrders = ({ orders, date }: { orders: Order[], date: Date }) => {
+// gets number of doses that are expiring within 10 days from an Order[].
+export const getExpiringDoseCount = ({ orders, date }: { orders: Order[], date: Date }) => {
+  // range of days to filter for
   const startDate = addDays(date, -30);
   const endDate = addDays(date, -20);
-  return orders.filter((order) => (
+
+  const expiringOrders = orders.filter((order) => (
     isAfter(order.arrived, startDate)
     && isBefore(order.arrived, endDate)
   ));
+  return expiringOrders
+    .map((order) => order.injections - order.vaccinations.length)
+    .reduce((a, b) => a + b, 0);
 };
-
-export const getExpiringOrderCount = (
-  { orders, date }: { orders: Order[], date: Date },
-) => getExpiringOrders({ orders, date }).length;
 
 // Builds a counter object from a given Order[].
 // Date specifies the point before which data is counted.
@@ -138,6 +139,7 @@ export const getMainCounts = ({ orders, date }: DateAndOrders): Counts => {
       expiredDoses: getExpiredDosesCount({ orders: orders[producer], date }),
       expiredOrders: getExpiredOrdersCount({ orders: orders[producer], date }),
       consumedOrders: getConsumedOrdersCount(orders[producer]),
+      expiringDoses: getExpiringDoseCount({ orders: orders[producer], date }),
     };
   });
 
