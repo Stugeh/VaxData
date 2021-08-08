@@ -10,18 +10,15 @@
         "build": "rm -rf build && cd client && yarn run build && cd ../server && yarn run tsc",
         "server": "cd server && yarn run dev",
         "client": "cd client && yarn start",
+        "populate": "cd server && yarn run migrate",
         "install": "cd server && yarn install && cd ../client yarn install"
     },
-    "dependencies": {
-        "@testing-library/jest-dom": "^5.11.4",
-        "@testing-library/react": "^11.1.0",
-        "@testing-library/user-event": "^12.1.10",
+    "devDependencies": {
         "eslint-config-airbnb": "^18.2.1",
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-react": "^7.21.5",
-        "eslint-plugin-react-hooks": "^4 || ^3 || ^2.3.0 || ^1.7.0",
-        "typescript": "^4.3.5"
+        "eslint-plugin-react-hooks": "^4 || ^3 || ^2.3.0 || ^1.7.0"
     },
     "browserslist": {
         "production": [
