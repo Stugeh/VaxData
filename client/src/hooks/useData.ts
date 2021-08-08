@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { addDays } from 'date-fns';
 import {
   Counts, DataOutput, DateAndOrders, Orders,
 } from '../types';
 import {
-  getExpiredDosesCount,
-  getExpiredOrdersCount,
-  getMainCounts, getOrdersBeforeDate, getOrdersOnDate,
+  getCumulativeCounts,
+  getOrdersBeforeDate,
+  getOrdersOnDate,
+  getDailyCounts,
 } from '../utils/dataHelpers';
 
 const emptyOrders: Orders = {
@@ -23,6 +23,8 @@ const emptyCounts: Counts = {
     expiredOrders: 0,
     consumedOrders: 0,
     expiringDoses: 0,
+    arrivedDoses: 0,
+    arrivedOrders: 0,
   },
   Antiqua: {
     vaccinations: 0,
@@ -32,6 +34,8 @@ const emptyCounts: Counts = {
     expiredOrders: 0,
     consumedOrders: 0,
     expiringDoses: 0,
+    arrivedDoses: 0,
+    arrivedOrders: 0,
   },
   Zerpfy: {
     vaccinations: 0,
@@ -41,6 +45,8 @@ const emptyCounts: Counts = {
     expiredOrders: 0,
     consumedOrders: 0,
     expiringDoses: 0,
+    arrivedDoses: 0,
+    arrivedOrders: 0,
   },
 };
 
@@ -54,21 +60,9 @@ const useData = ({ orders, date }: DateAndOrders): DataOutput => {
     // Order arrays
     const priorOrders = getOrdersBeforeDate({ orders, date });
     const ordersToday = getOrdersOnDate({ orders, date });
-    const expiringOrders = getOrdersOnDate({ orders, date: addDays(date, -30) });
     // various counts
-    const priorCounts = getMainCounts({ orders: priorOrders, date });
-    const countsToday = getMainCounts({ orders: ordersToday, date });
-
-    const producers = Object.keys(expiringOrders) as (keyof Orders)[];
-    producers.forEach((producer) => {
-      countsToday[producer].expiredDoses = getExpiredDosesCount({
-        orders: expiringOrders[producer], date,
-      });
-      countsToday[producer].expiredOrders = getExpiredOrdersCount({
-        orders: expiringOrders[producer], date,
-      });
-    });
-
+    const priorCounts = getCumulativeCounts({ orders: priorOrders, date });
+    const countsToday = getDailyCounts({ orders: priorOrders, date });
     setOrdersBeforeDate(priorOrders);
     setCumulativeCounts(priorCounts);
     setOrdersOnDate(ordersToday);
