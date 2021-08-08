@@ -21,13 +21,13 @@ const ChartContainer = ({ data }: {data: DataOutput}) => {
       <BarChart
         header="Orders Today"
         data={orderCountsToBarChart(countsOnDate)}
-        keys={['consumed', 'expired']}
+        keys={['arrived', 'expired']}
         index="producer"
       />
       <BarChart
         header="Doses Today"
         data={vaccineCountsToChart(countsOnDate)}
-        keys={['used', 'expired']}
+        keys={['used', 'expired', 'arrived']}
         index="producer"
       />
       <BarChart
