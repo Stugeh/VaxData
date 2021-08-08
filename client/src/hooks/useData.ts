@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
+import { addDays } from 'date-fns';
 import {
-  Counts, DataOutput, DateAndOrders, Orders, Vaccination,
+  Counts, DataOutput, DateAndOrders, Orders,
 } from '../types';
-
 import {
+  getExpiredDosesCount,
+  getExpiredOrdersCount,
   getMainCounts, getOrdersBeforeDate, getOrdersOnDate,
-  getVaccinationsOnDate,
 } from '../utils/dataHelpers';
 
 const emptyOrders: Orders = {
@@ -40,30 +41,35 @@ const emptyCounts: Counts = {
   },
 };
 
-const emptyVaccinations: Vaccination[] = [];
-
 const useData = ({ orders, date }: DateAndOrders): DataOutput => {
   const [ordersBeforeDate, setOrdersBeforeDate] = useState(emptyOrders);
   const [cumulativeCounts, setCumulativeCounts] = useState(emptyCounts);
   const [ordersOnDate, setOrdersOnDate] = useState(emptyOrders);
   const [countsOnDate, setCountsOnDate] = useState(emptyCounts);
-  const [vaccinationsToday, setVaccinationsToday] = useState(emptyVaccinations);
-  const dosesToday = vaccinationsToday.length;
 
   useEffect(() => {
     // Order arrays
     const priorOrders = getOrdersBeforeDate({ orders, date });
     const ordersToday = getOrdersOnDate({ orders, date });
+    const expiringOrders = getOrdersOnDate({ orders, date: addDays(date, -30) });
     // various counts
     const priorCounts = getMainCounts({ orders: priorOrders, date });
     const countsToday = getMainCounts({ orders: ordersToday, date });
-    const injectionsToday = getVaccinationsOnDate(orders, date);
+
+    const producers = Object.keys(expiringOrders) as (keyof Orders)[];
+    producers.forEach((producer) => {
+      countsToday[producer].expiredDoses = getExpiredDosesCount({
+        orders: expiringOrders[producer], date,
+      });
+      countsToday[producer].expiredOrders = getExpiredOrdersCount({
+        orders: expiringOrders[producer], date,
+      });
+    });
 
     setOrdersBeforeDate(priorOrders);
     setCumulativeCounts(priorCounts);
     setOrdersOnDate(ordersToday);
     setCountsOnDate(countsToday);
-    setVaccinationsToday(injectionsToday);
   }, [date, orders]);
   // how many vaxes used
 
@@ -81,13 +87,12 @@ const useData = ({ orders, date }: DateAndOrders): DataOutput => {
   // console.log(test.reduce((a, b) => a + b));
 
   // how many vaccines will expire within 4 days
+
   return {
     ordersBeforeDate,
     cumulativeCounts,
     ordersOnDate,
     countsOnDate,
-    dosesToday,
-    vaccinationsToday,
   };
 };
 
