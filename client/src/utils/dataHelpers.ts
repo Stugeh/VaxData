@@ -1,10 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 import {
-  isSameDay, isBefore, addDays, addSeconds,
+  isSameDay, isBefore, addDays, addSeconds, isAfter,
 } from 'date-fns';
 import {
   Counts, DateAndOrders, Orders, ProducerName,
-  Order, Vaccination,
+  Order, Vaccination, LooseObjectObject,
 } from '../types';
 
 // gets the date of the latest arrival
@@ -24,8 +24,6 @@ export const getLatestDate = (data: Orders): Date => {
   return firstDates[0];
 };
 
-// gets orders arrived on given date
-
 // gets orders before given date from an array
 export const ordersBefore = (date: Date, orders: Order[]) => (
   orders.filter((order) => (isBefore(order.arrived, addSeconds(date, 1))))
@@ -39,7 +37,7 @@ export const getOrdersBeforeDate = ({ date, orders }: DateAndOrders) => ({
   Zerpfy: ordersBefore(date, orders.Zerpfy),
 });
 
-// gets orders on a given date from an array
+// gets orders that arrived on a given date from an array
 export const ordersOn = (date: Date, orders: Order[]) => (
   orders.filter((order) => (
     isSameDay(order.arrived, date)
@@ -107,31 +105,41 @@ export const getExpiredDosesCount = ({ orders, date }: {orders: Order[], date: D
   return expiredDoseCounts.reduce((sum, current) => sum + current);
 };
 
+// gets all orders that are expiring within 10 days from an Order[].
+export const getExpiringOrders = ({ orders, date }: { orders: Order[], date: Date }) => {
+  const startDate = addDays(date, -30);
+  const endDate = addDays(date, -20);
+  return orders.filter((order) => (
+    isAfter(order.arrived, startDate)
+    && isBefore(order.arrived, endDate)
+  ));
+};
+
+export const getExpiringOrderCount = (
+  { orders, date }: { orders: Order[], date: Date },
+) => getExpiringOrders({ orders, date }).length;
+
 // Builds a counter object from a given Order[].
 // Date specifies the point before which data is counted.
-export const getMainCounts = ({ orders, date }: DateAndOrders): Counts => ({
-  Antiqua: {
-    orders: orders.Antiqua.length,
-    vaccinations: getVaccinationCount(orders.Antiqua),
-    doses: getDoseCount(orders.Antiqua),
-    expiredDoses: getExpiredDosesCount({ orders: orders.Antiqua, date }),
-    expiredOrders: getExpiredOrdersCount({ orders: orders.Antiqua, date }),
-    consumedOrders: getConsumedOrdersCount(orders.Antiqua),
-  },
-  SolarBuddhica: {
-    orders: orders.SolarBuddhica.length,
-    vaccinations: getVaccinationCount(orders.SolarBuddhica),
-    doses: getDoseCount(orders.SolarBuddhica),
-    expiredDoses: getExpiredDosesCount({ orders: orders.SolarBuddhica, date }),
-    expiredOrders: getExpiredOrdersCount({ orders: orders.SolarBuddhica, date }),
-    consumedOrders: getConsumedOrdersCount(orders.SolarBuddhica),
-  },
-  Zerpfy: {
-    orders: orders.Zerpfy.length,
-    vaccinations: getVaccinationCount(orders.Zerpfy),
-    doses: getDoseCount(orders.Zerpfy),
-    expiredDoses: getExpiredDosesCount({ orders: orders.Zerpfy, date }),
-    expiredOrders: getExpiredOrdersCount({ orders: orders.Zerpfy, date }),
-    consumedOrders: getConsumedOrdersCount(orders.Zerpfy),
-  },
-});
+export const getMainCounts = ({ orders, date }: DateAndOrders): Counts => {
+  const producers = [
+    ProducerName.Antiqua,
+    ProducerName.SolarBuddhica,
+    ProducerName.Zerpfy,
+  ];
+
+  const counts: LooseObjectObject = {};
+
+  producers.forEach((producer) => {
+    counts[producer] = {
+      orders: orders[producer].length,
+      vaccinations: getVaccinationCount(orders[producer]),
+      doses: getDoseCount(orders[producer]),
+      expiredDoses: getExpiredDosesCount({ orders: orders[producer], date }),
+      expiredOrders: getExpiredOrdersCount({ orders: orders[producer], date }),
+      consumedOrders: getConsumedOrdersCount(orders[producer]),
+    };
+  });
+
+  return counts as Counts;
+};
