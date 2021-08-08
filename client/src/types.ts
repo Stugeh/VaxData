@@ -45,7 +45,8 @@ export type Counts = {
         doses: number,
         expiredDoses: number,
         expiredOrders: number,
-        consumedOrders: number
+        consumedOrders: number,
+        expiringDoses: number
     };
 }
 
