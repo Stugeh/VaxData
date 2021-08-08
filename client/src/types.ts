@@ -58,6 +58,10 @@ export type ChartObject = {
     [key: string]: string | number
 }
 
+export type LooseObjectObject = {
+    [key: string]: Record<string, unknown>
+}
+
 export type ChartData = ChartObject[]
 
 export type DataOutput = {
