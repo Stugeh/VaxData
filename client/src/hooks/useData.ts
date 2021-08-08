@@ -22,6 +22,7 @@ const emptyCounts: Counts = {
     expiredDoses: 0,
     expiredOrders: 0,
     consumedOrders: 0,
+    expiringDoses: 0,
   },
   Antiqua: {
     vaccinations: 0,
@@ -30,6 +31,7 @@ const emptyCounts: Counts = {
     expiredDoses: 0,
     expiredOrders: 0,
     consumedOrders: 0,
+    expiringDoses: 0,
   },
   Zerpfy: {
     vaccinations: 0,
@@ -38,6 +40,7 @@ const emptyCounts: Counts = {
     expiredDoses: 0,
     expiredOrders: 0,
     consumedOrders: 0,
+    expiringDoses: 0,
   },
 };
 

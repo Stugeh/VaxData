@@ -20,22 +20,27 @@ export const vaccineCountsToChart = (counts: Counts): ChartData => {
     used: counts[producer].vaccinations,
     available: getAvailableDoses(counts[producer]),
     expired: counts[producer].expiredDoses,
+    expiring: counts[producer].expiringDoses,
   }));
 
   const totals = {
     producer: 'total',
     used:
-          counts.SolarBuddhica.vaccinations
-          + counts.Antiqua.vaccinations
-          + counts.Zerpfy.vaccinations,
+      counts.SolarBuddhica.vaccinations
+      + counts.Antiqua.vaccinations
+      + counts.Zerpfy.vaccinations,
     available:
-          getAvailableDoses(counts.SolarBuddhica)
-          + getAvailableDoses(counts.Antiqua)
-          + getAvailableDoses(counts.Zerpfy),
+      getAvailableDoses(counts.SolarBuddhica)
+      + getAvailableDoses(counts.Antiqua)
+      + getAvailableDoses(counts.Zerpfy),
     expired:
-          counts.SolarBuddhica.expiredDoses
-          + counts.Antiqua.expiredDoses
-          + counts.Zerpfy.expiredDoses,
+      counts.SolarBuddhica.expiredDoses
+      + counts.Antiqua.expiredDoses
+      + counts.Zerpfy.expiredDoses,
+    expiring:
+      counts.SolarBuddhica.expiringDoses
+      + counts.Antiqua.expiringDoses
+      + counts.Zerpfy.expiringDoses,
   };
 
   return [...chartData, totals] as ChartData;
