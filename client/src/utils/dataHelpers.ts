@@ -66,13 +66,8 @@ export const getDoseCount = (orders: Order[]): number => {
 };
 
 // gets all injections given on a date
-export const getVaccinationsOnDate = (orders: Orders, date: Date): Vaccination[] => {
-  const allData = [
-    ...orders.Antiqua,
-    ...orders.SolarBuddhica,
-    ...orders.Zerpfy,
-  ];
-  const vaccinations = allData.flatMap((order) => order.vaccinations);
+export const getVaccinationsOnDate = (orders: Order[], date: Date): Vaccination[] => {
+  const vaccinations = orders.flatMap((order) => order.vaccinations);
   return vaccinations
     .filter((vax) => isSameDay(vax.injected, date));
 };
@@ -120,19 +115,45 @@ export const getExpiringDoseCount = ({ orders, date }: { orders: Order[], date: 
     .reduce((a, b) => a + b, 0);
 };
 
+const getArrivedDoses = (orders: Order[], date: Date): number => {
+  const arrivedOrders = orders.filter((order) => isSameDay(order.arrived, date));
+  return arrivedOrders
+    .map((order) => order.injections)
+    .reduce((a, b) => a + b, 0);
+};
+
+export const getDailyCounts = ({ orders, date }: DateAndOrders) => {
+  const producers = Object.keys(orders) as (keyof Orders)[];
+  const counts: LooseObjectObject = {};
+  const ordersToday = getOrdersOnDate({ orders, date });
+  const expiringOrders = getOrdersOnDate({ orders, date: addDays(date, -30) });
+  producers.forEach((producer) => {
+    counts[producer] = {
+      arrivedOrders: orders[producer].filter((order) => isSameDay(order.arrived, date)).length,
+      arrivedDoses: getArrivedDoses(orders[producer], date),
+      orders: ordersToday[producer].length,
+      vaccinations: getVaccinationsOnDate(orders[producer], date).length,
+      doses: getDoseCount(ordersToday[producer]),
+      expiredDoses: getExpiredDosesCount({ orders: expiringOrders[producer], date }),
+      expiredOrders: getExpiredOrdersCount({ orders: expiringOrders[producer], date }),
+      consumedOrders: getConsumedOrdersCount(orders[producer]),
+      expiringDoses: getExpiringDoseCount({ orders: orders[producer], date }),
+    };
+  });
+  return counts as Counts;
+};
+
 // Builds a counter object from a given Order[].
 // Date specifies the point before which data is counted.
-export const getMainCounts = ({ orders, date }: DateAndOrders): Counts => {
-  const producers = [
-    ProducerName.Antiqua,
-    ProducerName.SolarBuddhica,
-    ProducerName.Zerpfy,
-  ];
+export const getCumulativeCounts = ({ orders, date }: DateAndOrders): Counts => {
+  const producers = Object.keys(orders) as (keyof Orders)[];
 
   const counts: LooseObjectObject = {};
 
   producers.forEach((producer) => {
     counts[producer] = {
+      arrivedOrders: orders[producer].filter((order) => isSameDay(order.arrived, date)),
+      arrivedDoses: getArrivedDoses(orders[producer], date),
       orders: orders[producer].length,
       vaccinations: getVaccinationCount(orders[producer]),
       doses: getDoseCount(orders[producer]),
