@@ -1,8 +1,7 @@
-import { ResponsiveLine } from '@nivo/line';
+import { ResponsiveLine, Serie } from '@nivo/line';
 import { Card, Typography } from '@material-ui/core';
-import { ChartData } from '../types';
 
-type ChartInput = { data: ChartData, keys: string[], index: string, header: string}
+type ChartInput = { data: Serie[], header: string}
 
 const LineChart = ({
   data, header,
@@ -21,17 +20,7 @@ const LineChart = ({
       yFormat=" >-.2f"
       axisTop={null}
       axisRight={null}
-      axisBottom={{
-        orient: 'bottom',
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: 'transportation',
-        legendOffset: 36,
-        legendPosition: 'middle',
-      }}
       axisLeft={{
-        orient: 'left',
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
