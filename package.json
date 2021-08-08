@@ -11,7 +11,7 @@
         "server": "cd server && yarn run dev",
         "client": "cd client && yarn start",
         "populate": "cd server && yarn run migrate",
-        "install": "cd server && yarn install && cd ../client yarn install"
+        "install": "cd server && yarn install && cd ../client && ls && yarn install"
     },
     "devDependencies": {
         "eslint-config-airbnb": "^18.2.1",
