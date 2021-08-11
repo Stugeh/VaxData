@@ -4,6 +4,8 @@ import {
   Order,
   ProducerName,
   Orders,
+  Counts,
+  DataOutput,
 } from './types';
 
 export const testVax: Vaccination = {
@@ -194,4 +196,69 @@ export const testOrders: Orders = {
       vaccinations: [],
     },
   ],
+};
+
+export const testCounts: Counts = {
+  Antiqua: {
+    arrivedOrders: 10,
+    arrivedDoses: 20,
+    orders: 30,
+    vaccinations: 56,
+    doses: 13,
+    expiredDoses: 145,
+    expiredOrders: 33,
+    consumedOrders: 12,
+    expiringDoses: 3,
+  },
+  SolarBuddhica: {
+    arrivedOrders: 40,
+    arrivedDoses: 23,
+    orders: 34,
+    vaccinations: 6,
+    doses: 1,
+    expiredDoses: 14,
+    expiredOrders: 3,
+    consumedOrders: 2,
+    expiringDoses: 35,
+  },
+  Zerpfy: {
+    arrivedOrders: 1012,
+    arrivedDoses: 2012,
+    orders: 302,
+    vaccinations: 256,
+    doses: 134,
+    expiredDoses: 1645,
+    expiredOrders: 334,
+    consumedOrders: 124,
+    expiringDoses: 32,
+  },
+};
+
+export const testDataOutput: DataOutput = {
+  cumulativeCounts: testCounts,
+  countsOnDate: testCounts,
+  ordersBeforeDate: testOrders,
+  ordersOnDate: {
+    SolarBuddhica: [
+      {
+        orderId: '08e53940-8fa4-4d89-aff3-8d99bcae4a36',
+        healthCareDistrict: 'HYKS',
+        orderNumber: 2042,
+        responsiblePerson: 'Iivari Wuorenheimo',
+        injections: 6,
+        arrived: new Date('2021-02-06T06:59:44.674Z'),
+        vaccine: ProducerName.SolarBuddhica,
+        vaccinations: [
+          {
+            vaccinationId: 'b74edafd-32b9-4714-bca8-cc26060f4928',
+            gender: Gender.Other,
+            sourceBottle: '08e53940-8fa4-4d89-aff3-8d99bcae4a36',
+            injected: new Date('2021-02-19T05:46:46.674Z'),
+          },
+        ],
+      },
+    ],
+    Antiqua: [],
+    Zerpfy: [],
+  },
 };
