@@ -140,6 +140,7 @@ export const getDailyCounts = ({ orders, date }: DateAndOrders) => {
       expiringDoses: getExpiringDoseCount({ orders: orders[producer], date }),
     };
   });
+  // TODO validation for counts objects
   return counts as Counts;
 };
 
@@ -163,6 +164,6 @@ export const getCumulativeCounts = ({ orders, date }: DateAndOrders): Counts => 
       expiringDoses: getExpiringDoseCount({ orders: orders[producer], date }),
     };
   });
-
+  // TODO validation for counts objects
   return counts as Counts;
 };
