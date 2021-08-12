@@ -31,7 +31,7 @@ export const getOrdersToDate = ({ date, orders }: DateAndOrders) => ({
 });
 
 // gets orders that arrived on a given date from an array
-export const ordersOn = (date: Date, orders: Order[]) => (
+export const filterOrderArrOnDate = (date: Date, orders: Order[]) => (
   orders.filter((order) => (
     isSameDay(order.arrived, date)
   ))
@@ -40,9 +40,9 @@ export const ordersOn = (date: Date, orders: Order[]) => (
 // populates the Orders objects order arrays with
 // all orders that arrived on a given date
 export const getOrdersOnDate = ({ date, orders }: DateAndOrders) => ({
-  SolarBuddhica: ordersOn(date, orders.SolarBuddhica),
-  Antiqua: ordersOn(date, orders.Antiqua),
-  Zerpfy: ordersOn(date, orders.Zerpfy),
+  SolarBuddhica: filterOrderArrOnDate(date, orders.SolarBuddhica),
+  Antiqua: filterOrderArrOnDate(date, orders.Antiqua),
+  Zerpfy: filterOrderArrOnDate(date, orders.Zerpfy),
 });
 
 // gets the amount of given vaccinations in an Order[]
