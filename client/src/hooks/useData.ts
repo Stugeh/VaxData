@@ -4,7 +4,7 @@ import {
 } from '../types';
 import {
   getCumulativeCounts,
-  getOrdersBeforeDate,
+  getOrdersToDate,
   getOrdersOnDate,
   getDailyCounts,
 } from '../utils/dataHelpers';
@@ -58,7 +58,7 @@ const useData = ({ orders, date }: DateAndOrders): DataOutput => {
 
   useEffect(() => {
     // Order arrays
-    const priorOrders = getOrdersBeforeDate({ orders, date });
+    const priorOrders = getOrdersToDate({ orders, date });
     const ordersToday = getOrdersOnDate({ orders, date });
     // various counts
     const priorCounts = getCumulativeCounts({ orders: priorOrders, date });

@@ -8,6 +8,12 @@ import {
   DataOutput,
 } from './types';
 
+export const spreadOrders = (orders: Orders) => [
+  ...orders.Antiqua,
+  ...orders.SolarBuddhica,
+  ...orders.Zerpfy,
+];
+
 export const testVax: Vaccination = {
   vaccinationId: 'bf59a0fc-83f0-4940-ad10-e2753c9c0442',
 

@@ -18,16 +18,16 @@ export const getLatestDate = (data: Orders): Date => {
 };
 
 // gets orders before given date from an array
-export const ordersBefore = (date: Date, orders: Order[]) => (
+export const filterOrderArrayPriorToDate = (date: Date, orders: Order[]) => (
   orders.filter((order) => (isBefore(order.arrived, addSeconds(date, 1))))
 );
 
 // populates the Orders objects order arrays with
 // all orders that arrived before a given date
-export const getOrdersBeforeDate = ({ date, orders }: DateAndOrders) => ({
-  SolarBuddhica: ordersBefore(date, orders.SolarBuddhica),
-  Antiqua: ordersBefore(date, orders.Antiqua),
-  Zerpfy: ordersBefore(date, orders.Zerpfy),
+export const getOrdersToDate = ({ date, orders }: DateAndOrders) => ({
+  SolarBuddhica: filterOrderArrayPriorToDate(date, orders.SolarBuddhica),
+  Antiqua: filterOrderArrayPriorToDate(date, orders.Antiqua),
+  Zerpfy: filterOrderArrayPriorToDate(date, orders.Zerpfy),
 });
 
 // gets orders that arrived on a given date from an array
