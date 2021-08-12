@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import {
   isSameDay, isBefore, addDays, addSeconds, isAfter, max,
 } from 'date-fns';
@@ -10,12 +9,11 @@ import {
 // gets the date of the latest arrival
 export const getLatestDate = (data: Orders): Date => {
   if (data.SolarBuddhica.length === 0) return new Date();
-  const allOrders = [
+  const dates = [
     ...data.SolarBuddhica,
     ...data.Antiqua,
     ...data.Zerpfy,
-  ];
-  const dates = allOrders.map((order) => order.arrived);
+  ].map((order) => order.arrived);
   return max(dates);
 };
 
