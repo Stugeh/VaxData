@@ -6,6 +6,8 @@ import {
   getLatestDate,
   getOrdersToDate,
   getOrdersOnDate,
+  getVaccinationCount,
+  getDoseCount,
 } from '../../utils/dataHelpers';
 
 const DATES = spreadOrders(testOrders)
@@ -40,5 +42,23 @@ describe('dataHelpers', () => {
     const datesToday = DATES.filter((date) => isSameDay(date, DATES[3]));
     const orderArr = spreadOrders(ordersOn);
     expect(orderArr.length).toBe(datesToday.length);
+  });
+
+  it('getVaccinationCount', () => {
+    const vaxes = spreadOrders(testOrders).flatMap((order) => order.vaccinations);
+    const vaxCount = getVaccinationCount(spreadOrders(testOrders));
+    expect(vaxCount).toBe(vaxes.length);
+  });
+
+  it('getDoseCount', () => {
+    const allOrders = spreadOrders(testOrders);
+    const doseCount = getDoseCount(allOrders);
+    const doses = allOrders.map((o) => o.injections).reduce((a, b) => a + b);
+    expect(doseCount).toBe(doses);
+  });
+
+  it('getVaccinationsOnDate', () => {
+    const allOrders = spreadOrders(testOrders);
+    const vaxes = allOrders.flatMap((order) => order.vaccinations);
   });
 });
