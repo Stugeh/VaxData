@@ -108,12 +108,11 @@ export const getExpiringDoseCount = ({ orders, date }: { orders: Order[], date: 
     .reduce((a, b) => a + b, 0);
 };
 
-const getArrivedDoses = (orders: Order[], date: Date): number => {
-  const arrivedOrders = orders.filter((order) => isSameDay(order.arrived, date));
-  return arrivedOrders
-    .map((order) => order.injections)
-    .reduce((a, b) => a + b, 0);
-};
+export const getArrivedDoses = (orders: Order[], date: Date): number => orders
+  // orders arrived on date
+  .filter((order) => isSameDay(order.arrived, date))
+  .map((order) => order.injections)
+  .reduce((a, b) => a + b, 0);
 
 export const getDailyCounts = ({ orders, date }: DateAndOrders) => {
   const producers = Object.keys(orders) as (keyof Orders)[];
