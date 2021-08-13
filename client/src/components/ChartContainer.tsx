@@ -36,6 +36,9 @@ const ChartContainer = ({ data }: {data: DataOutput}) => {
         keys={['expiring']}
         index="producer"
       />
+      <div className="chartFiller" />
+      <div className="chartFiller" />
+      <div className="chartFiller" />
     </div>
   );
 };
