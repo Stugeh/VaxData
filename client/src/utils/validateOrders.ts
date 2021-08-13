@@ -4,7 +4,7 @@ import {
 
 import {
   isNumber, isString, isObject, isArray, hasManufacturers, isHealthcareDistrict,
-  isDate, isProducer, isGender,
+  stringIsValidDate, isProducer, isGender,
 } from './typeCheckers';
 
 const parseId = (id: unknown): string => {
@@ -18,7 +18,7 @@ const parseDistrict = (district: unknown): HealthCareDistrict => {
 };
 
 const parseDate = (date: unknown): Date => {
-  if (!date || !isString(date) || !isDate(date)) {
+  if (!date || !isString(date) || !stringIsValidDate(date)) {
     throw new Error('Incorrect or missing date');
   }
   return new Date(date);
