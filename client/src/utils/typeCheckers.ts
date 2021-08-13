@@ -2,7 +2,7 @@ import {
   ProducerName, UnknownOrders, Gender, HealthCareDistrict,
 } from '../types';
 
-export const isObject = (obj: unknown): obj is Record<string, unknown> => typeof obj === 'object' || obj instanceof Object;
+export const isObject = (obj: unknown): obj is Record<string, unknown> => (typeof obj === 'object' || obj instanceof Object) && !Array.isArray(obj);
 
 export const isString = (text: unknown): text is string => typeof text === 'string' || text instanceof String;
 
