@@ -1,7 +1,11 @@
 import {
+  addDays,
+  isAfter,
+  isBefore,
   isSameDay, max, min,
 } from 'date-fns';
 import { testOrders, spreadOrders } from '../../testConstants';
+import { ProducerName, Counts } from '../../types';
 import {
   getLatestDate,
   getOrdersToDate,
@@ -10,6 +14,9 @@ import {
   getDoseCount,
   getVaccinationsOnDate,
   getExpiredDosesCount,
+  getExpiringDoseCount,
+  getArrivedDoses,
+  getDailyCounts,
 } from '../../utils/dataHelpers';
 
 const DATES = spreadOrders(testOrders)
@@ -87,5 +94,44 @@ describe('dataHelpers', () => {
       .reduce((a, b) => a + b);
     expect(expiredFuture).toBe(unusedDoses);
     expect(expiredPast).toBe(0);
+  });
+
+  it('getExpiringDoseCount', () => {
+    const date = addDays(ALL_ORDERS[2].arrived, 20);
+    const expiringCount = getExpiringDoseCount({ orders: ALL_ORDERS, date });
+
+    const startDate = addDays(date, -30);
+    const endDate = addDays(date, -20);
+
+    const expiringOrders = ALL_ORDERS.filter((order) => (
+      isAfter(order.arrived, startDate)
+      && isBefore(order.arrived, endDate)
+    ));
+    expect(expiringCount).toBe(expiringOrders.length);
+  });
+
+  it('getArrivedDoses', () => {
+    const date = ALL_ORDERS[2].arrived;
+    const arrivedCount = ALL_ORDERS
+      .filter((order) => isSameDay(order.arrived, date))
+      .map((order) => order.injections)
+      .reduce((a, b) => a + b, 0);
+    const doses = getArrivedDoses(ALL_ORDERS, date);
+    expect(doses).toBe(arrivedCount);
+  });
+
+  it('getDailyCounts', () => {
+    const allZero = getDailyCounts({
+      orders: testOrders,
+      date: new Date(4000, 1, 1),
+    });
+    const producers = Object.values(ProducerName);
+    producers.forEach((producer) => {
+      const keys = Object
+        .keys(allZero[producer]) as (keyof Counts[ProducerName])[];
+      keys.forEach((key) => {
+        expect(allZero[producer][key]).toBe(0);
+      });
+    });
   });
 });
