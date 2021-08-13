@@ -8,7 +8,7 @@ export const isString = (text: unknown): text is string => typeof text === 'stri
 
 export const isNumber = (num: unknown): num is number => typeof num === 'number' || num instanceof Number;
 
-export const isDate = (date: string): boolean => Boolean(Date.parse(date));
+export const stringIsValidDate = (date: string): boolean => Boolean(Date.parse(date));
 
 export const isArray = (
   arr: unknown,
