@@ -5,7 +5,7 @@ import {
   isSameDay, max, min,
 } from 'date-fns';
 import { testOrders, spreadOrders } from '../../testConstants';
-import { ProducerName, Counts } from '../../types';
+import { ProducerName, Counts, LooseObjectObject } from '../../types';
 import {
   getLatestDate,
   getOrdersToDate,
@@ -13,10 +13,13 @@ import {
   getVaccinationCount,
   getDoseCount,
   getVaccinationsOnDate,
+  getExpiredOrdersCount,
+  getConsumedOrdersCount,
   getExpiredDosesCount,
   getExpiringDoseCount,
   getArrivedDoses,
   getDailyCounts,
+  getCumulativeCounts,
 } from '../../utils/dataHelpers';
 
 const DATES = spreadOrders(testOrders)
@@ -129,9 +132,73 @@ describe('dataHelpers', () => {
     producers.forEach((producer) => {
       const keys = Object
         .keys(allZero[producer]) as (keyof Counts[ProducerName])[];
-      keys.forEach((key) => {
-        expect(allZero[producer][key]).toBe(0);
-      });
+      keys
+        .forEach((key) => expect(allZero[producer][key]).toBe(0));
     });
+
+    const date = ALL_ORDERS[2].arrived;
+    const arrivedToday = getOrdersOnDate({ date, orders: testOrders });
+    const expiringOrders = getOrdersOnDate({ orders: testOrders, date: addDays(date, -30) });
+    const notZero = getDailyCounts({
+      orders: testOrders,
+      date,
+    });
+    const testCounts: LooseObjectObject = {};
+    producers.forEach((producer) => {
+      testCounts[producer] = {
+        arrivedOrders: testOrders[producer]
+          .filter((order) => isSameDay(order.arrived, date)).length,
+        arrivedDoses: getArrivedDoses(testOrders[producer], date),
+        orders: arrivedToday[producer].length,
+        vaccinations: getVaccinationsOnDate(testOrders[producer], date).length,
+        doses: getDoseCount(arrivedToday[producer]),
+        expiredDoses: getExpiredDosesCount({ orders: expiringOrders[producer], date }),
+        expiredOrders: getExpiredOrdersCount({ orders: expiringOrders[producer], date }),
+        consumedOrders: getConsumedOrdersCount(testOrders[producer]),
+        expiringDoses: getExpiringDoseCount({ orders: testOrders[producer], date }),
+      };
+    });
+    expect(notZero).toEqual(testCounts);
+  });
+
+  it('getCumulativeCounts', () => {
+    const allZero = getCumulativeCounts({
+      orders: testOrders,
+      date: new Date(1000, 1, 1),
+    });
+    const producers = Object.values(ProducerName);
+    producers.forEach((producer) => {
+      const keys = Object
+        .keys(allZero[producer]) as (keyof Counts[ProducerName])[];
+      keys
+        .forEach((key) => {
+          expect(allZero[producer][key]).toBe(0);
+        });
+    });
+
+    const date = ALL_ORDERS[2].arrived;
+    const notZero = getCumulativeCounts({
+      orders: testOrders,
+      date,
+    });
+
+    const orders = testOrders;
+    const ordersToDate = getOrdersToDate({ orders, date });
+    const testCounts: LooseObjectObject = {};
+    producers.forEach((producer) => {
+      testCounts[producer] = {
+        arrivedOrders: orders[producer]
+          .filter((order) => isSameDay(order.arrived, date)).length,
+        arrivedDoses: getArrivedDoses(orders[producer], date),
+        orders: ordersToDate[producer].length,
+        vaccinations: getVaccinationCount(ordersToDate[producer]),
+        doses: getDoseCount(ordersToDate[producer]),
+        expiredDoses: getExpiredDosesCount({ orders: orders[producer], date }),
+        expiredOrders: getExpiredOrdersCount({ orders: orders[producer], date }),
+        consumedOrders: getConsumedOrdersCount(orders[producer]),
+        expiringDoses: getExpiringDoseCount({ orders: orders[producer], date }),
+      };
+    });
+    expect(notZero).toEqual(testCounts);
   });
 });
