@@ -3,7 +3,7 @@ import {
 } from 'date-fns';
 import {
   Counts, DateAndOrders, Orders,
-  Order, Vaccination, LooseObjectObject,
+  Order, Vaccination, LooseObjectObject, ProducerName,
 } from '../types';
 
 // gets the date of the latest arrival
@@ -115,7 +115,7 @@ export const getArrivedDoses = (orders: Order[], date: Date): number => orders
   .reduce((a, b) => a + b, 0);
 
 export const getDailyCounts = ({ orders, date }: DateAndOrders) => {
-  const producers = Object.keys(orders) as (keyof Orders)[];
+  const producers = Object.values(ProducerName);
   const counts: LooseObjectObject = {};
   const ordersToday = getOrdersOnDate({ orders, date });
   const expiringOrders = getOrdersOnDate({ orders, date: addDays(date, -30) });
@@ -139,17 +139,18 @@ export const getDailyCounts = ({ orders, date }: DateAndOrders) => {
 // Builds a counter object from a given Order[].
 // Date specifies the point before which data is counted.
 export const getCumulativeCounts = ({ orders, date }: DateAndOrders): Counts => {
-  const producers = Object.keys(orders) as (keyof Orders)[];
-
+  const producers = Object.values(ProducerName);
+  const ordersToDate = getOrdersToDate({ orders, date });
   const counts: LooseObjectObject = {};
 
   producers.forEach((producer) => {
     counts[producer] = {
-      arrivedOrders: orders[producer].filter((order) => isSameDay(order.arrived, date)),
+      arrivedOrders: orders[producer]
+        .filter((order) => isSameDay(order.arrived, date)).length,
       arrivedDoses: getArrivedDoses(orders[producer], date),
-      orders: orders[producer].length,
-      vaccinations: getVaccinationCount(orders[producer]),
-      doses: getDoseCount(orders[producer]),
+      orders: ordersToDate[producer].length,
+      vaccinations: getVaccinationCount(ordersToDate[producer]),
+      doses: getDoseCount(ordersToDate[producer]),
       expiredDoses: getExpiredDosesCount({ orders: orders[producer], date }),
       expiredOrders: getExpiredOrdersCount({ orders: orders[producer], date }),
       consumedOrders: getConsumedOrdersCount(orders[producer]),
