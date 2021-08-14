@@ -10,7 +10,7 @@
     "lint": "eslint --ext .ts .",
     "start": "node build/index.js",
     "migrate": "ts-node-dev ./src/utils/migrate.ts",
-    "test": "NODE_ENV=test jest --verbose --runInBand",
+    "test": "NODE_ENV=test jest --verbose --runInBand"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
