@@ -7,7 +7,7 @@
     "scripts": {
         "start": "node ./server/build/src/index.js",
         "test": "cd server && yarn run test && cd ../client && yarn run test",
-        "build": "rm -rf ./server/build && cd client && yarn run build && cd ../server && echo $PWD && yarn run tsc",
+        "build": "rm -rf ./server/build && cd client && yarn run build && cd ../server && yarn run tsc",
         "server": "cd server && yarn run dev",
         "client": "cd client && yarn start",
         "populate": "cd server && yarn run migrate",
