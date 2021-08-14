@@ -193,7 +193,7 @@ export const testOrders:Orders = {
   ],
 };
 
-export const rawOrders: unknown = {
+export const rawOrders = {
   SolarBuddhica: [
     {
       orderId: '08e53940-8fa4-4d89-aff3-8d99bcae4a36',
