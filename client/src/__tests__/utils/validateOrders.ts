@@ -19,28 +19,28 @@ describe('validateOrders integration test', () => {
   });
 });
 
-describe('validateOrders unit tests', () => {
-  it('parseDistrict', () => { });
+// describe('validateOrders unit tests', () => {
+//   it('parseDistrict', () => { });
 
-  it('parseDate', () => { });
+//   it('parseDate', () => { });
 
-  it('parseString', () => { });
+//   it('parseString', () => { });
 
-  it('parseNumber', () => { });
+//   it('parseNumber', () => { });
 
-  it('parseProducer', () => { });
+//   it('parseProducer', () => { });
 
-  it('parseGender', () => { });
+//   it('parseGender', () => { });
 
-  it('parseSrcBottle', () => { });
+//   it('parseSrcBottle', () => { });
 
-  it('parseVaccination', () => { });
+//   it('parseVaccination', () => { });
 
-  it('parseVaccinations', () => { });
+//   it('parseVaccinations', () => { });
 
-  it('parseOrder', () => { });
+//   it('parseOrder', () => { });
 
-  it('parseProducerArrays', () => { });
+//   it('parseProducerArrays', () => { });
 
-  it('validateOrders', () => {});
-});
+//   it('validateOrders', () => {});
+// });
