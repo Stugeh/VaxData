@@ -17,6 +17,7 @@ describe('Order service', () => {
     let orders: Order[];
 
     it('getAll can fetch orders', async () => {
+        jest.setTimeout(20000);
         orders = await getAllOrders();
         const keys = [
             'orderId', 'healthCareDistrict', 'orderNumber',
