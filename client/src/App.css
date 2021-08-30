@@ -20,6 +20,15 @@
   background-color: white;
 }
 
+.chart-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-right: 50px;
+  padding-bottom: 50px;
+}
+
 .chart {
   margin-left: 50px;
   margin-top: 50px;
@@ -34,13 +43,4 @@
   height: 300px;
   padding-bottom: 10px;
   width: 500px;
-}
-
-.chart-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding-right: 50px;
-  padding-bottom: 50px;
 }
