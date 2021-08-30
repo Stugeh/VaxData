@@ -11,6 +11,8 @@ on:
 jobs:
   deployment_pipeline:
     runs-on: ubuntu-18.04
+    env:
+      MONGOURL: ${{ secrets.MONGOURL}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
