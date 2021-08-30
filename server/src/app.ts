@@ -9,7 +9,7 @@ import orderRouter from './routes/orderRouter';
 const app = express();
 
 // DB connection
-console.info('connecting to', MONGOURL);
+console.info('connecting to mongodb');
 mongoose.connect(MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch((err) => console.log('err', err));
 
@@ -26,6 +26,10 @@ app.use(cors());
 app.use('/api/orders/', orderRouter);
 app.get('/', function (_req, res) {
     res.sendFile(path.join(__dirname, '../index.html'));
+});
+
+app.get('/health', (_req, res) => {
+    res.send('ok');
 });
 
 
