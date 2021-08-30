@@ -7,7 +7,7 @@ import TopBar from './components/TopBar';
 import ChartContainer from './components/ChartContainer';
 
 function App() {
-  const { orders } = useFetchOrders();
+  const { orders, loading } = useFetchOrders();
   const [date, setDate] = useState<Date | null>(new Date());
   const data = useData({
     date: date || new Date(),
@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="App">
       <TopBar setDate={setDate} date={date} />
-      <ChartContainer data={data} />
+      <ChartContainer data={data} loading={loading} />
     </div>
   );
 }

@@ -14,14 +14,17 @@ const initData: Orders = {
 const useFetchOrders = () => {
   const [orders, setOrders] = useState<Orders>(initData);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const resp = await axios.get<Orders>(`${apiUrl}`);
         const body = validateOrders(resp.data);
         if (body === null) throw new Error('data failed to validate or was null');
         setOrders(body);
+        setLoading(false);
       } catch (err) {
         setError(err);
       }
@@ -29,7 +32,7 @@ const useFetchOrders = () => {
     void fetchData();
   }, []);
 
-  return { orders, error };
+  return { orders, error, loading };
 };
 
 export default useFetchOrders;

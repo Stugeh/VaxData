@@ -3,32 +3,47 @@ name: Deployment pipeline
 on:
   push:
     branches:
-      - production
+      - main
   pull_request:
-    branches: [main, production]
+    branches: [main]
     types: [opened, synchronize]
 
 jobs:
-  simple_deployment_pipeline:
+  deployment_pipeline:
     runs-on: ubuntu-18.04
+    env:
+      MONGOURL: ${{ secrets.MONGOURL}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: "14.17.x"
+
       - name: install
         run: yarn run install
+
+      - name: lint
+        run: cd client && yarn run eslint && cd ../server && yarn run lint
+
       - name: build
-        run: npm run build
+        run: yarn run build
+
       - name: test
-        run: npm run test
+        run: yarn run test
+
       - name: deploy
+        if: |
+          github.event_name == 'push'
+          && !contains(join(github.event.commits.*.message, ', '), '#skip')
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "vax-data"
           heroku_email: "tuukkaveteli@gmail.com"
+          healthcheck: "https://vax-data.herokuapp.com/health"
+          checkstring: "ok"
           rollbackonhealthcheckfailed: true
+
       - uses: actions/checkout@v2
       - name: Bump version and push tag
         if: |
@@ -37,3 +52,4 @@ jobs:
         uses: anothrNick/github-tag-action@1.33.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: "patch"

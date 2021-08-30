@@ -1,14 +1,21 @@
 import { ResponsiveBar } from '@nivo/bar';
-import { Card, Typography } from '@material-ui/core';
+import { Card, Typography, CircularProgress } from '@material-ui/core';
 import { ChartData } from '../types';
 
-type ChartInput = { data: ChartData, keys: string[], index: string, header: string}
+type ChartInput = {
+  data: ChartData,
+  keys: string[],
+  index: string,
+  header: string,
+  loading: boolean
+}
 
 const BarChart = ({
-  data, keys, index, header,
+  data, keys, index, header, loading,
 }:ChartInput) => (
   <Card className="chart">
     <Typography variant="h5">{ header }</Typography>
+    {loading ? <CircularProgress /> : null}
     <ResponsiveBar
       data={data}
       keys={keys}
